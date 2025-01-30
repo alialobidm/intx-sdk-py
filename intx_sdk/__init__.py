@@ -1,4 +1,4 @@
-# Copyright 2024-present Coinbase Global, Inc.
+# Copyright 2025-present Coinbase Global, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,19 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 #  limitations under the License.
-
-from setuptools import setup, find_packages
-
-setup(
-    name="intx-sdk-py",
-    version="0.2.0",
-    packages=find_packages(),
-    install_requires=[
-        'requests',
-    ],
-    entry_points={
-        'console_scripts': [
-            'intx-sdk=intx_sdk.__main__:main',
-        ],
-    },
-)
