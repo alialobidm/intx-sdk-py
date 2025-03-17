@@ -40,9 +40,12 @@ class IntxClient:
     def get_your_rankings(self, request: GetYourRankingsRequest) -> GetYourRankingsResponse:
         path = f"/rankings/statistics"
 
-        query_params = append_query_param("", 'instrument_type', request.instrument_type)
-        query_params = append_query_param(query_params, 'period', request.period)
-        query_params = append_query_param(query_params, 'instruments', request.instruments)
+        if request.instrument_type:
+            query_params = append_query_param(query_params, 'instrument_type', request.instrument_type)
+        if request.period:
+            query_params = append_query_param(query_params, 'period', request.period)
+        if request.instruments:
+            query_params = append_query_param(query_params, 'instruments', request.instruments)
 
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
         return GetYourRankingsResponse(response.json(), request)
