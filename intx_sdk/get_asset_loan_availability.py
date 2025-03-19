@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.base_response import BaseResponse
 from intx_sdk.client import Client
@@ -20,27 +20,23 @@ from intx_sdk.credentials import Credentials
 
 
 @dataclass
-class AcquireRepayLoanRequest:
+class GetAssetLoanAvailabilityRequest:
     portfolio: str
     asset: str
-    action: str
-    amount: str
     allowed_status_codes: Optional[List[int]] = None
 
 
 @dataclass
-class AcquireRepayLoanResponse(BaseResponse):
-    request: AcquireRepayLoanRequest
+class GetAssetLoanAvailabilityResponse(BaseResponse):
+    request: GetAssetLoanAvailabilityRequest
 
 
 class IntxClient:
     def __init__(self, credentials: Credentials, base_url: Optional[str] = None):
         self.client = Client(credentials, base_url=base_url)
 
-    def acquire_repay_loan(self, request: AcquireRepayLoanRequest) -> AcquireRepayLoanResponse:
-        path = f"/portfolios/{request.portfolio}/loans/{request.asset}"
+    def get_asset_loan_availability(self, request: GetAssetLoanAvailabilityRequest) -> GetAssetLoanAvailabilityResponse:
+        path = f"/portfolios/{request.portfolio}/loans/{request.asset}/availability"
 
-        body = {k: v for k, v in asdict(request).items() if v is not None}
-
-        response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return AcquireRepayLoanResponse(response.json(), request)
+        response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
+        return GetAssetLoanAvailabilityResponse(response.json(), request)

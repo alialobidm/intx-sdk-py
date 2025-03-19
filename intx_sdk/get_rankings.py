@@ -21,7 +21,7 @@ from intx_sdk.utils import append_query_param
 
 
 @dataclass
-class GetYourRankingsRequest:
+class GetRankingsRequest:
     instrument_type: str
     period: Optional[str] = None
     instruments: Optional[List[str]] = None     
@@ -29,15 +29,15 @@ class GetYourRankingsRequest:
 
 
 @dataclass
-class GetYourRankingsResponse(BaseResponse):
-    request: GetYourRankingsRequest
+class GetRankingsResponse(BaseResponse):
+    request: GetRankingsRequest
 
 
 class IntxClient:
     def __init__(self, credentials: Credentials, base_url: Optional[str] = None):
         self.client = Client(credentials, base_url=base_url)
 
-    def get_your_rankings(self, request: GetYourRankingsRequest) -> GetYourRankingsResponse:
+    def get_rankings(self, request: GetRankingsRequest) -> GetRankingsResponse:
         path = f"/rankings/statistics"
 
         if request.instrument_type:
@@ -48,4 +48,4 @@ class IntxClient:
             query_params = append_query_param(query_params, 'instruments', request.instruments)
 
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return GetYourRankingsResponse(response.json(), request)
+        return GetRankingsResponse(response.json(), request)
