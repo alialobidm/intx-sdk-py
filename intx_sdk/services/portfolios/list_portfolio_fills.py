@@ -10,16 +10,24 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-#  limitations under the License.
+# limitations under the License.
 
-from intx_sdk.client_services import IntxServicesClient
-from intx_sdk.credentials import Credentials
-from intx_sdk.client import Client, PRODUCTION_BASE_URL, SANDBOX_BASE_URL
+from dataclasses import dataclass
+from typing import List, Optional, Dict, Any
+from intx_sdk.utils import PaginationParams
 
-__all__ = [
-    "IntxServicesClient",
-    "Credentials",
-    "Client",
-    "PRODUCTION_BASE_URL",
-    "SANDBOX_BASE_URL",
-]
+
+@dataclass
+class ListPortfolioFillsRequest:
+    portfolio: str
+    pagination: Optional[PaginationParams] = None
+    allowed_status_codes: Optional[List[int]] = None
+    order_id: Optional[str] = None
+    client_order_id: Optional[str] = None
+    ref_datetime: Optional[str] = None
+    time_from: Optional[str] = None
+
+
+@dataclass
+class ListPortfolioFillsResponse:
+    response: Dict[str, Any]

@@ -22,7 +22,12 @@ import requests
 
 from intx_sdk.credentials import Credentials
 
-DEFAULT_V1_API_BASE_URL = "https://api.international.coinbase.com/api/v1"
+# Environment URLs
+PRODUCTION_BASE_URL = "https://api.international.coinbase.com/api/v1"
+SANDBOX_BASE_URL = "https://api-n5e1.coinbase.com/api/v1"
+
+# Default URL (currently set to production)
+DEFAULT_V1_API_BASE_URL = PRODUCTION_BASE_URL
 
 
 class Client:

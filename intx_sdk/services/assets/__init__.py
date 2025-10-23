@@ -10,16 +10,19 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-#  limitations under the License.
+# limitations under the License.
 
-from intx_sdk.client_services import IntxServicesClient
-from intx_sdk.credentials import Credentials
-from intx_sdk.client import Client, PRODUCTION_BASE_URL, SANDBOX_BASE_URL
+from .service import AssetsService
+from .list_assets import ListAssetsRequest, ListAssetsResponse
+from .get_asset_details import GetAssetDetailsRequest, GetAssetDetailsResponse
+from .get_supported_networks import GetSupportedNetworksRequest, GetSupportedNetworksResponse
 
 __all__ = [
-    "IntxServicesClient",
-    "Credentials",
-    "Client",
-    "PRODUCTION_BASE_URL",
-    "SANDBOX_BASE_URL",
+    "AssetsService",
+    "ListAssetsRequest",
+    "ListAssetsResponse",
+    "GetAssetDetailsRequest",
+    "GetAssetDetailsResponse",
+    "GetSupportedNetworksRequest",
+    "GetSupportedNetworksResponse",
 ]

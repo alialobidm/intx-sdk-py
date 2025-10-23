@@ -1,4 +1,4 @@
-# Copyright 2024-present Coinbase Global, Inc.
+# Copyright 2025-present Coinbase Global, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -10,20 +10,13 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-#  limitations under the License.
+# limitations under the License.
 
-from setuptools import setup, find_packages
+from .service import PositionOffsetsService
+from .list_position_offsets import ListPositionOffsetsRequest, ListPositionOffsetsResponse
 
-setup(
-    name="intx-sdk-py",
-    version="1.0.0",
-    packages=find_packages(),
-    install_requires=[
-        'requests',
-    ],
-    entry_points={
-        'console_scripts': [
-            'intx-sdk=intx_sdk.__main__:main',
-        ],
-    },
-)
+__all__ = [
+    "PositionOffsetsService",
+    "ListPositionOffsetsRequest",
+    "ListPositionOffsetsResponse",
+]

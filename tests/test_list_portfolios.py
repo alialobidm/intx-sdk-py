@@ -14,14 +14,16 @@
 
 import unittest
 from unittest.mock import patch, MagicMock
-from intx_sdk.list_portfolios import IntxClient, ListPortfoliosRequest, Credentials
-from test_constants import BASE_URL
+from intx_sdk import IntxServicesClient
+from intx_sdk.services.portfolios import ListPortfoliosRequest
+from intx_sdk.credentials import Credentials
+from tests.test_constants import BASE_URL
 
 
 class TestListPortfolios(unittest.TestCase):
 
-    @patch('list_portfolios.Client')
-    def test_list_portfolios_success(self, MockClient):
+    @patch('intx_sdk.client.Client.request')
+    def test_list_portfolios_success(self, mock_request):
         mock_response = MagicMock()
         mock_response.json.return_value = [
             {
@@ -59,31 +61,36 @@ class TestListPortfolios(unittest.TestCase):
                 "position_offsets_enabled": False
             }
         ]
-        MockClient.return_value.request.return_value = mock_response
+        mock_request.return_value = mock_response
 
-        credentials = Credentials.from_env("INTX_CREDENTIALS")
-        intx_client = IntxClient(credentials, base_url=BASE_URL)
+        credentials = Credentials(
+            access_key="test_key",
+            passphrase="test_passphrase",
+            signing_key="test_signing_key"
+        )
+        client = IntxServicesClient(credentials, base_url=BASE_URL)
 
         request = ListPortfoliosRequest()
-        response = intx_client.list_portfolios(request)
+        response = client.portfolios.list_portfolios(request)
 
-        self.assertEqual(len(response.response), 2)
-        self.assertTrue(all(isinstance(portfolio["portfolio_id"], str) for portfolio in response.response))
-        self.assertTrue(all(isinstance(portfolio["is_default"], bool) for portfolio in response.response))
+        self.assertEqual(len(response.portfolios), 2)
+        self.assertTrue(all(isinstance(portfolio.portfolio_id, str) for portfolio in response.portfolios))
+        self.assertTrue(all(isinstance(portfolio.is_default, bool) for portfolio in response.portfolios))
 
-    @patch('list_portfolios.Client')
-    def test_list_portfolios_failure(self, MockClient):
-        mock_response = MagicMock()
-        mock_response.json.side_effect = Exception("API error")
+    @patch('intx_sdk.client.Client.request')
+    def test_list_portfolios_failure(self, mock_request):
+        mock_request.side_effect = Exception("API error")
 
-        MockClient.return_value.request.side_effect = mock_response.json.side_effect
-
-        credentials = Credentials.from_env("INTX_CREDENTIALS")
-        intx_client = IntxClient(credentials, base_url="https://api-n5e1.coinbase.com/api/v1")
+        credentials = Credentials(
+            access_key="test_key",
+            passphrase="test_passphrase",
+            signing_key="test_signing_key"
+        )
+        client = IntxServicesClient(credentials, base_url="https://api-n5e1.coinbase.com/api/v1")
 
         request = ListPortfoliosRequest()
         with self.assertRaises(Exception) as context:
-            intx_client.list_portfolios(request)
+            client.portfolios.list_portfolios(request)
 
         self.assertTrue('API error' in str(context.exception))
 

@@ -1,0 +1,148 @@
+# Copyright 2025-present Coinbase Global, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from dataclasses import asdict
+from intx_sdk.client import Client
+from intx_sdk.utils import append_pagination_params, append_query_param
+from .create_counterparty_id import CreateCounterpartyIdRequest, CreateCounterpartyIdResponse
+from .create_crypto_address import CreateCryptoAddressRequest, CreateCryptoAddressResponse
+from .get_transfer import GetTransferRequest, GetTransferResponse
+from .list_transfers import ListTransfersRequest, ListTransfersResponse
+from .validate_counterparty_id import ValidateCounterpartyIdRequest, ValidateCounterpartyIdResponse
+from .withdraw_to_counterparty_id import WithdrawToCounterpartyIdRequest, WithdrawToCounterpartyIdResponse
+from .withdraw_to_crypto_address import WithdrawToCryptoAddressRequest, WithdrawToCryptoAddressResponse
+
+
+class TransfersService:
+    """Service for transfer-related operations."""
+
+    def __init__(self, client: Client):
+        """
+        Initialize the TransfersService.
+
+        Args:
+            client: The HTTP client for making API requests
+        """
+        self.client = client
+
+    def create_counterparty_id(self, request: CreateCounterpartyIdRequest) -> CreateCounterpartyIdResponse:
+        """
+        Create a counterparty ID.
+
+        Args:
+            request: CreateCounterpartyIdRequest with portfolio
+
+        Returns:
+            CreateCounterpartyIdResponse containing the counterparty ID
+        """
+        path = "/transfers/create-counterparty-id"
+        body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
+        response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
+        return CreateCounterpartyIdResponse(response=response.json())
+
+    def create_crypto_address(self, request: CreateCryptoAddressRequest) -> CreateCryptoAddressResponse:
+        """
+        Create a crypto address.
+
+        Args:
+            request: CreateCryptoAddressRequest with portfolio, asset, and network info
+
+        Returns:
+            CreateCryptoAddressResponse containing the crypto address
+        """
+        path = "/transfers/address"
+        body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
+        response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
+        return CreateCryptoAddressResponse(response=response.json())
+
+    def get_transfer(self, request: GetTransferRequest) -> GetTransferResponse:
+        """
+        Get a specific transfer by UUID.
+
+        Args:
+            request: GetTransferRequest with transfer UUID
+
+        Returns:
+            GetTransferResponse containing the transfer data
+        """
+        path = f"/transfers/{request.transfer_uuid}"
+        response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
+        return GetTransferResponse(response=response.json())
+
+    def list_transfers(self, request: ListTransfersRequest) -> ListTransfersResponse:
+        """
+        List transfers with optional filters.
+
+        Args:
+            request: ListTransfersRequest with optional filters
+
+        Returns:
+            ListTransfersResponse containing the transfers list
+        """
+        path = "/transfers"
+
+        query_params = append_pagination_params("", request.pagination)
+        query_params = append_query_param(query_params, 'portfolios', request.portfolios)
+        query_params = append_query_param(query_params, 'time_from', request.time_from)
+        query_params = append_query_param(query_params, 'time_to', request.time_to)
+        query_params = append_query_param(query_params, 'status', request.status)
+        query_params = append_query_param(query_params, 'type', request.type)
+
+        response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
+        return ListTransfersResponse(response=response.json())
+
+    def validate_counterparty_id(self, request: ValidateCounterpartyIdRequest) -> ValidateCounterpartyIdResponse:
+        """
+        Validate a counterparty ID.
+
+        Args:
+            request: ValidateCounterpartyIdRequest with counterparty ID
+
+        Returns:
+            ValidateCounterpartyIdResponse containing validation result
+        """
+        path = "/transfers/validate-counterparty-id"
+        body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
+        response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
+        return ValidateCounterpartyIdResponse(response=response.json())
+
+    def withdraw_to_counterparty_id(self, request: WithdrawToCounterpartyIdRequest) -> WithdrawToCounterpartyIdResponse:
+        """
+        Withdraw to a counterparty ID.
+
+        Args:
+            request: WithdrawToCounterpartyIdRequest with withdrawal details
+
+        Returns:
+            WithdrawToCounterpartyIdResponse containing withdrawal result
+        """
+        path = "/transfers/withdraw/counterparty"
+        body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
+        response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
+        return WithdrawToCounterpartyIdResponse(response=response.json())
+
+    def withdraw_to_crypto_address(self, request: WithdrawToCryptoAddressRequest) -> WithdrawToCryptoAddressResponse:
+        """
+        Withdraw to a crypto address.
+
+        Args:
+            request: WithdrawToCryptoAddressRequest with withdrawal details
+
+        Returns:
+            WithdrawToCryptoAddressResponse containing withdrawal result
+        """
+        path = "/transfers/withdraw"
+        body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
+        response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
+        return WithdrawToCryptoAddressResponse(response=response.json())
