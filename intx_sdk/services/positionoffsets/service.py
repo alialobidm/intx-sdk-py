@@ -18,27 +18,10 @@ from .list_position_offsets import ListPositionOffsetsRequest, ListPositionOffse
 
 
 class PositionOffsetsService:
-    """Service for position offsets-related operations."""
-
     def __init__(self, client: Client):
-        """
-        Initialize the PositionOffsetsService.
-
-        Args:
-            client: The HTTP client for making API requests
-        """
         self.client = client
 
     def list_position_offsets(self, request: ListPositionOffsetsRequest) -> ListPositionOffsetsResponse:
-        """
-        List all position offsets.
-
-        Args:
-            request: ListPositionOffsetsRequest with optional allowed_status_codes
-
-        Returns:
-            ListPositionOffsetsResponse containing the position offsets data
-        """
         path = "/position-offsets"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()

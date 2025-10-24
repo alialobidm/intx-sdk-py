@@ -36,27 +36,10 @@ from .withdraw_to_crypto_address import WithdrawToCryptoAddressRequest, Withdraw
 
 
 class TransfersService:
-    """Service for transfer-related operations."""
-
     def __init__(self, client: Client):
-        """
-        Initialize the TransfersService.
-
-        Args:
-            client: The HTTP client for making API requests
-        """
         self.client = client
 
     def create_counterparty_id(self, request: CreateCounterpartyIdRequest) -> CreateCounterpartyIdResponse:
-        """
-        Create a counterparty ID.
-
-        Args:
-            request: CreateCounterpartyIdRequest with portfolio
-
-        Returns:
-            CreateCounterpartyIdResponse containing the counterparty ID
-        """
         path = "/transfers/create-counterparty-id"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -65,15 +48,6 @@ class TransfersService:
         return CreateCounterpartyIdResponse(counterparty_id_result=counterparty_id_result)
 
     def create_crypto_address(self, request: CreateCryptoAddressRequest) -> CreateCryptoAddressResponse:
-        """
-        Create a crypto address.
-
-        Args:
-            request: CreateCryptoAddressRequest with portfolio, asset, and network info
-
-        Returns:
-            CreateCryptoAddressResponse containing the crypto address
-        """
         path = "/transfers/address"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -82,15 +56,6 @@ class TransfersService:
         return CreateCryptoAddressResponse(crypto_address_result=crypto_address_result)
 
     def get_transfer(self, request: GetTransferRequest) -> GetTransferResponse:
-        """
-        Get a specific transfer by UUID.
-
-        Args:
-            request: GetTransferRequest with transfer UUID
-
-        Returns:
-            GetTransferResponse containing the transfer data
-        """
         path = f"/transfers/{request.transfer_uuid}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -103,15 +68,6 @@ class TransfersService:
         return GetTransferResponse(transfer=transfer)
 
     def list_transfers(self, request: ListTransfersRequest) -> ListTransfersResponse:
-        """
-        List transfers with optional filters.
-
-        Args:
-            request: ListTransfersRequest with optional filters
-
-        Returns:
-            ListTransfersResponse containing the transfers list
-        """
         path = "/transfers"
 
         query_params = append_pagination_params("", request.pagination)
@@ -128,15 +84,6 @@ class TransfersService:
         return ListTransfersResponse(transfers_result=transfers_result)
 
     def validate_counterparty_id(self, request: ValidateCounterpartyIdRequest) -> ValidateCounterpartyIdResponse:
-        """
-        Validate a counterparty ID.
-
-        Args:
-            request: ValidateCounterpartyIdRequest with counterparty ID
-
-        Returns:
-            ValidateCounterpartyIdResponse containing validation result
-        """
         path = "/transfers/validate-counterparty-id"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -145,15 +92,6 @@ class TransfersService:
         return ValidateCounterpartyIdResponse(counterparty_validation=counterparty_validation)
 
     def withdraw_to_counterparty_id(self, request: WithdrawToCounterpartyIdRequest) -> WithdrawToCounterpartyIdResponse:
-        """
-        Withdraw to a counterparty ID.
-
-        Args:
-            request: WithdrawToCounterpartyIdRequest with withdrawal details
-
-        Returns:
-            WithdrawToCounterpartyIdResponse containing withdrawal result
-        """
         path = "/transfers/withdraw/counterparty"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -162,15 +100,6 @@ class TransfersService:
         return WithdrawToCounterpartyIdResponse(withdraw_result=withdraw_result)
 
     def withdraw_to_crypto_address(self, request: WithdrawToCryptoAddressRequest) -> WithdrawToCryptoAddressResponse:
-        """
-        Withdraw to a crypto address.
-
-        Args:
-            request: WithdrawToCryptoAddressRequest with withdrawal details
-
-        Returns:
-            WithdrawToCryptoAddressResponse containing withdrawal result
-        """
         path = "/transfers/withdraw"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)

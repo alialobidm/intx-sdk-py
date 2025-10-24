@@ -64,27 +64,10 @@ from .get_the_total_open_position_limit_for_portfolio import GetTheTotalOpenPosi
 
 
 class PortfoliosService:
-    """Service for portfolio-related operations."""
-
     def __init__(self, client: Client):
-        """
-        Initialize the PortfoliosService.
-
-        Args:
-            client: The HTTP client for making API requests
-        """
         self.client = client
 
     def list_portfolios(self, request: ListPortfoliosRequest) -> ListPortfoliosResponse:
-        """
-        List all portfolios.
-
-        Args:
-            request: ListPortfoliosRequest with optional allowed_status_codes
-
-        Returns:
-            ListPortfoliosResponse containing the portfolio data
-        """
         path = "/portfolios"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         portfolios_data = response.json()
@@ -92,15 +75,6 @@ class PortfoliosService:
         return ListPortfoliosResponse(portfolios=portfolios)
 
     def create_portfolio(self, request: CreatePortfolioRequest) -> CreatePortfolioResponse:
-        """
-        Create a new portfolio.
-
-        Args:
-            request: CreatePortfolioRequest with portfolio name
-
-        Returns:
-            CreatePortfolioResponse containing the created portfolio data
-        """
         path = "/portfolios"
         body = {"name": request.name}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -109,15 +83,6 @@ class PortfoliosService:
         return CreatePortfolioResponse(portfolio=portfolio)
 
     def acquire_or_repay_loan(self, request: AcquireOrRepayLoanRequest) -> AcquireOrRepayLoanResponse:
-        """
-        Acquire or repay a loan for a portfolio asset.
-
-        Args:
-            request: AcquireOrRepayLoanRequest with portfolio, asset, action, and amount
-
-        Returns:
-            AcquireOrRepayLoanResponse containing the loan operation result
-        """
         path = f"/portfolios/{request.portfolio}/loans/{request.asset}"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -126,45 +91,18 @@ class PortfoliosService:
         return AcquireOrRepayLoanResponse(loan=loan)
 
     def enable_disable_auto_margin(self, request: EnableDisableAutoMarginRequest) -> EnableDisableAutoMarginResponse:
-        """
-        Enable or disable auto margin for a portfolio.
-
-        Args:
-            request: EnableDisableAutoMarginRequest with portfolio and enabled flag
-
-        Returns:
-            EnableDisableAutoMarginResponse containing the operation result
-        """
         path = f"/portfolios/{request.portfolio}/auto-margin-enabled"
         body = {"enabled": request.enabled}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
         return EnableDisableAutoMarginResponse(response=response.json())
 
     def enable_disable_cross_collateral(self, request: EnableDisableCrossCollateralRequest) -> EnableDisableCrossCollateralResponse:
-        """
-        Enable or disable cross collateral for a portfolio.
-
-        Args:
-            request: EnableDisableCrossCollateralRequest with portfolio and enabled flag
-
-        Returns:
-            EnableDisableCrossCollateralResponse containing the operation result
-        """
         path = f"/portfolios/{request.portfolio}/cross-collateral-enabled"
         body = {"enabled": request.enabled}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
         return EnableDisableCrossCollateralResponse(response=response.json())
 
     def get_balance_for_portfolio_asset(self, request: GetBalanceForPortfolioAssetRequest) -> GetBalanceForPortfolioAssetResponse:
-        """
-        Get balance for a specific asset in a portfolio.
-
-        Args:
-            request: GetBalanceForPortfolioAssetRequest with portfolio and asset
-
-        Returns:
-            GetBalanceForPortfolioAssetResponse containing the balance data
-        """
         path = f"/portfolios/{request.portfolio}/balances/{request.asset}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -172,30 +110,12 @@ class PortfoliosService:
         return GetBalanceForPortfolioAssetResponse(balance=balance)
 
     def get_fund_transfer_limit(self, request: GetFundTransferLimitRequest) -> GetFundTransferLimitResponse:
-        """
-        Get fund transfer limit between portfolios for a specific asset.
-
-        Args:
-            request: GetFundTransferLimitRequest with portfolio and asset
-
-        Returns:
-            GetFundTransferLimitResponse containing the transfer limit
-        """
         path = f"/portfolios/transfer/{request.portfolio}/{request.asset}/transfer-limit"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
         return GetFundTransferLimitResponse(max_portfolio_transfer_amount=data["max_portfolio_transfer_amount"])
 
     def get_portfolio(self, request: GetPortfolioRequest) -> GetPortfolioResponse:
-        """
-        Get details for a specific portfolio.
-
-        Args:
-            request: GetPortfolioRequest with portfolio
-
-        Returns:
-            GetPortfolioResponse containing the portfolio data
-        """
         path = f"/portfolios/{request.portfolio}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -203,15 +123,6 @@ class PortfoliosService:
         return GetPortfolioResponse(portfolio=portfolio)
 
     def get_portfolio_details(self, request: GetPortfolioDetailsRequest) -> GetPortfolioDetailsResponse:
-        """
-        Get detailed information for a portfolio.
-
-        Args:
-            request: GetPortfolioDetailsRequest with portfolio
-
-        Returns:
-            GetPortfolioDetailsResponse containing the detailed portfolio data
-        """
         path = f"/portfolios/{request.portfolio}/detail"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -224,15 +135,6 @@ class PortfoliosService:
         return GetPortfolioDetailsResponse(portfolio_detail=detail)
 
     def get_portfolio_summary(self, request: GetPortfolioSummaryRequest) -> GetPortfolioSummaryResponse:
-        """
-        Get summary information for a portfolio.
-
-        Args:
-            request: GetPortfolioSummaryRequest with portfolio
-
-        Returns:
-            GetPortfolioSummaryResponse containing the portfolio summary data
-        """
         path = f"/portfolios/{request.portfolio}/summary"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -240,15 +142,6 @@ class PortfoliosService:
         return GetPortfolioSummaryResponse(portfolio_summary=summary)
 
     def get_position_for_portfolio_instrument(self, request: GetPositionForPortfolioInstrumentRequest) -> GetPositionForPortfolioInstrumentResponse:
-        """
-        Get position for a specific instrument in a portfolio.
-
-        Args:
-            request: GetPositionForPortfolioInstrumentRequest with portfolio and instrument
-
-        Returns:
-            GetPositionForPortfolioInstrumentResponse containing the position data
-        """
         path = f"/portfolios/{request.portfolio}/positions/{request.instrument}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -256,15 +149,6 @@ class PortfoliosService:
         return GetPositionForPortfolioInstrumentResponse(position=position)
 
     def list_portfolio_balances(self, request: ListPortfolioBalancesRequest) -> ListPortfolioBalancesResponse:
-        """
-        List all balances for a portfolio.
-
-        Args:
-            request: ListPortfolioBalancesRequest with portfolio
-
-        Returns:
-            ListPortfolioBalancesResponse containing the balances data
-        """
         path = f"/portfolios/{request.portfolio}/balances"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -272,15 +156,6 @@ class PortfoliosService:
         return ListPortfolioBalancesResponse(balances=balances)
 
     def list_portfolio_fills(self, request: ListPortfolioFillsRequest) -> ListPortfolioFillsResponse:
-        """
-        List fills for a portfolio.
-
-        Args:
-            request: ListPortfolioFillsRequest with portfolio, optional pagination and filters
-
-        Returns:
-            ListPortfolioFillsResponse containing the fills data
-        """
         path = f"/portfolios/{request.portfolio}/fills"
 
         query_params = append_pagination_params("", request.pagination)
@@ -297,15 +172,6 @@ class PortfoliosService:
         return ListPortfolioFillsResponse(fills_result=fills_result)
 
     def list_portfolio_fee_rates(self, request: ListPortfolioFeeRatesRequest) -> ListPortfolioFeeRatesResponse:
-        """
-        List fee rates for portfolios.
-
-        Args:
-            request: ListPortfolioFeeRatesRequest with optional allowed_status_codes
-
-        Returns:
-            ListPortfolioFeeRatesResponse containing the fee rates data
-        """
         path = "/portfolios/fee-rates"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -313,15 +179,6 @@ class PortfoliosService:
         return ListPortfolioFeeRatesResponse(fee_rates=fee_rates)
 
     def transfer_position(self, request: TransferPositionRequest) -> TransferPositionResponse:
-        """
-        Transfer a position between portfolios.
-
-        Args:
-            request: TransferPositionRequest with from_portfolio, to_portfolio, instrument, quantity, and side
-
-        Returns:
-            TransferPositionResponse containing the transfer result
-        """
         path = "/portfolios/transfer-position"
         body = {
             "from": request.from_portfolio,
@@ -336,15 +193,6 @@ class PortfoliosService:
         return TransferPositionResponse(transfer_result=transfer_result)
 
     def transfer_funds(self, request: TransferFundsRequest) -> TransferFundsResponse:
-        """
-        Transfer funds between portfolios.
-
-        Args:
-            request: TransferFundsRequest with from_portfolio, to_portfolio, asset, and amount
-
-        Returns:
-            TransferFundsResponse containing the transfer result
-        """
         path = "/portfolios/transfer"
         body = {
             "from": request.from_portfolio,
@@ -358,15 +206,6 @@ class PortfoliosService:
         return TransferFundsResponse(transfer_result=transfer_result)
 
     def set_margin_override(self, request: SetMarginOverrideRequest) -> SetMarginOverrideResponse:
-        """
-        Set margin override for a portfolio.
-
-        Args:
-            request: SetMarginOverrideRequest with portfolio_id and margin_override
-
-        Returns:
-            SetMarginOverrideResponse containing the operation result
-        """
         path = "/portfolios/margin"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -375,15 +214,6 @@ class PortfoliosService:
         return SetMarginOverrideResponse(margin_override_result=margin_override_result)
 
     def preview_loan_update(self, request: PreviewLoanUpdateRequest) -> PreviewLoanUpdateResponse:
-        """
-        Preview a loan update for a portfolio asset.
-
-        Args:
-            request: PreviewLoanUpdateRequest with portfolio, asset, action, and amount
-
-        Returns:
-            PreviewLoanUpdateResponse containing the preview data
-        """
         path = f"/portfolios/{request.portfolio}/loans/{request.asset}/preview"
         body = {k: v for k, v in asdict(request).items() if v is not None and k not in ['portfolio', 'asset', 'allowed_status_codes']}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -392,15 +222,6 @@ class PortfoliosService:
         return PreviewLoanUpdateResponse(loan_preview=loan_preview)
 
     def patch_portfolio(self, request: PatchPortfolioRequest) -> PatchPortfolioResponse:
-        """
-        Patch (update) a portfolio's settings.
-
-        Args:
-            request: PatchPortfolioRequest with portfolio and optional settings
-
-        Returns:
-            PatchPortfolioResponse containing the updated portfolio data
-        """
         path = f"/portfolios/{request.portfolio}"
         body = {k: v for k, v in asdict(request).items() if v is not None and k not in ['portfolio', 'portfolio_name', 'allowed_status_codes']}
         response = self.client.request("PATCH", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -409,15 +230,6 @@ class PortfoliosService:
         return PatchPortfolioResponse(portfolio=portfolio)
 
     def list_portfolio_positions(self, request: ListPortfolioPositionsRequest) -> ListPortfolioPositionsResponse:
-        """
-        List all positions for a portfolio.
-
-        Args:
-            request: ListPortfolioPositionsRequest with portfolio
-
-        Returns:
-            ListPortfolioPositionsResponse containing the positions data
-        """
         path = f"/portfolios/{request.portfolio}/positions"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -425,15 +237,6 @@ class PortfoliosService:
         return ListPortfolioPositionsResponse(positions=positions)
 
     def get_asset_loan_availability(self, request: GetAssetLoanAvailabilityRequest) -> GetAssetLoanAvailabilityResponse:
-        """
-        Get loan availability for a portfolio asset.
-
-        Args:
-            request: GetAssetLoanAvailabilityRequest with portfolio and asset
-
-        Returns:
-            GetAssetLoanAvailabilityResponse containing the loan availability data
-        """
         path = f"/portfolios/{request.portfolio}/loans/{request.asset}/availability"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -441,15 +244,6 @@ class PortfoliosService:
         return GetAssetLoanAvailabilityResponse(loan_availability=loan_availability)
 
     def get_loan_info_for_portfolio_asset(self, request: GetLoanInfoForPortfolioAssetRequest) -> GetLoanInfoForPortfolioAssetResponse:
-        """
-        Get loan information for a portfolio asset.
-
-        Args:
-            request: GetLoanInfoForPortfolioAssetRequest with portfolio and asset
-
-        Returns:
-            GetLoanInfoForPortfolioAssetResponse containing the loan information
-        """
         path = f"/portfolios/{request.portfolio}/loans/{request.asset}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -457,15 +251,6 @@ class PortfoliosService:
         return GetLoanInfoForPortfolioAssetResponse(portfolio_loan=portfolio_loan)
 
     def update_portfolio(self, request: UpdatePortfolioRequest) -> UpdatePortfolioResponse:
-        """
-        Update a portfolio's name.
-
-        Args:
-            request: UpdatePortfolioRequest with portfolio and name
-
-        Returns:
-            UpdatePortfolioResponse containing the updated portfolio data
-        """
         path = f"/portfolios/{request.portfolio}"
         body = {"name": request.name}
         response = self.client.request("PUT", path, body=body, allowed_status_codes=request.allowed_status_codes)
@@ -474,15 +259,6 @@ class PortfoliosService:
         return UpdatePortfolioResponse(portfolio=portfolio)
 
     def list_open_position_limits_for_all_instruments(self, request: ListOpenPositionLimitsForAllInstrumentsRequest) -> ListOpenPositionLimitsForAllInstrumentsResponse:
-        """
-        List open position limits for all instruments in a portfolio.
-
-        Args:
-            request: ListOpenPositionLimitsForAllInstrumentsRequest with portfolio
-
-        Returns:
-            ListOpenPositionLimitsForAllInstrumentsResponse containing the position limits data
-        """
         path = f"/portfolios/{request.portfolio}/position-limits/positions"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -490,15 +266,6 @@ class PortfoliosService:
         return ListOpenPositionLimitsForAllInstrumentsResponse(position_limits=position_limits)
 
     def list_fills_by_portfolios(self, request: ListFillsByPortfoliosRequest) -> ListFillsByPortfoliosResponse:
-        """
-        List fills for multiple portfolios.
-
-        Args:
-            request: ListFillsByPortfoliosRequest with optional filters and pagination
-
-        Returns:
-            ListFillsByPortfoliosResponse containing the fills data
-        """
         path = "/portfolios/fills"
         query_params = append_pagination_params("", request.pagination)
         query_params = append_query_param(query_params, 'portfolios', request.portfolios)
@@ -513,15 +280,6 @@ class PortfoliosService:
         return ListFillsByPortfoliosResponse(fills_result=fills_result)
 
     def list_active_loans_for_portfolio(self, request: ListActiveLoansForPortfolioRequest) -> ListActiveLoansForPortfolioResponse:
-        """
-        List active loans for a portfolio.
-
-        Args:
-            request: ListActiveLoansForPortfolioRequest with portfolio
-
-        Returns:
-            ListActiveLoansForPortfolioResponse containing the active loans data
-        """
         path = f"/portfolios/{request.portfolio}/loans"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -529,15 +287,6 @@ class PortfoliosService:
         return ListActiveLoansForPortfolioResponse(loans=loans)
 
     def get_open_position_limits_for_portfolio_instrument(self, request: GetOpenPositionLimitsForPortfolioInstrumentRequest) -> GetOpenPositionLimitsForPortfolioInstrumentResponse:
-        """
-        Get open position limits for a specific instrument in a portfolio.
-
-        Args:
-            request: GetOpenPositionLimitsForPortfolioInstrumentRequest with portfolio and instrument
-
-        Returns:
-            GetOpenPositionLimitsForPortfolioInstrumentResponse containing the position limits data
-        """
         path = f"/portfolios/{request.portfolio}/position-limits/positions/{request.instrument}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()
@@ -545,15 +294,6 @@ class PortfoliosService:
         return GetOpenPositionLimitsForPortfolioInstrumentResponse(open_position_limit=open_position_limit)
 
     def get_the_total_open_position_limit_for_portfolio(self, request: GetTheTotalOpenPositionLimitForPortfolioRequest) -> GetTheTotalOpenPositionLimitForPortfolioResponse:
-        """
-        Get the total open position limit for a portfolio.
-
-        Args:
-            request: GetTheTotalOpenPositionLimitForPortfolioRequest with portfolio
-
-        Returns:
-            GetTheTotalOpenPositionLimitForPortfolioResponse containing the total position limit data
-        """
         path = f"/portfolios/{request.portfolio}/position-limits"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
         data = response.json()

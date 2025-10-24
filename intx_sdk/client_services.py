@@ -11,12 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""
-Compact lazy-loading implementation using a descriptor pattern.
-This approach is more concise and uses Python's descriptor protocol.
-"""
-
 import os
 from typing import Optional, Any, Callable, Type
 from intx_sdk.client import Client, PRODUCTION_BASE_URL, SANDBOX_BASE_URL
@@ -24,11 +18,6 @@ from intx_sdk.credentials import Credentials
 
 
 class LazyProperty:
-    """
-    A descriptor that implements lazy loading for service properties.
-    This is a more elegant and reusable approach.
-    """
-
     def __init__(self, factory: Callable[['IntxServicesClient'], Any]):
         self.factory = factory
         self.attr_name = None
@@ -51,10 +40,6 @@ class LazyProperty:
 
 
 def lazy_service(service_factory):
-    """
-    Decorator factory for creating lazy service properties.
-    Usage: @lazy_service(lambda: OrdersService) or @lazy_service(OrdersService)
-    """
     def factory(client_instance: 'IntxServicesClient'):
         # Handle both lambda functions and direct class references
         if callable(service_factory) and getattr(service_factory, '__name__', None) == '<lambda>':
@@ -69,22 +54,12 @@ def lazy_service(service_factory):
 
 
 class IntxServicesClient:
-    """
-    A very compact lazy-loading client using descriptors.
-    This approach is the most concise and elegant.
-    """
-
     def __init__(self, credentials: Credentials, base_url: Optional[str] = None):
         self._client = Client(credentials, base_url=base_url)
 
     @classmethod
     def from_env(cls, variable_name: str = 'INTX_CREDENTIALS',
                  base_url: Optional[str] = None) -> 'IntxServicesClient':
-        """
-        Create an IntxServicesClient with credentials from environment variables.
-
-        Set INTX_ENVIRONMENT=sandbox to use sandbox URL, otherwise defaults to production.
-        """
         credentials = Credentials.from_env(variable_name)
 
         # If no base_url provided, check INTX_ENVIRONMENT variable
@@ -96,7 +71,6 @@ class IntxServicesClient:
 
     @property
     def client(self) -> Client:
-        """Access to the underlying INTX SDK client."""
         return self._client
 
     # Import services dynamically to avoid circular imports

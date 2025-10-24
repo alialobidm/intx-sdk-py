@@ -19,27 +19,10 @@ from .get_rankings import GetRankingsRequest, GetRankingsResponse
 
 
 class RankingsService:
-    """Service for rankings-related operations."""
-
     def __init__(self, client: Client):
-        """
-        Initialize the RankingsService.
-
-        Args:
-            client: The HTTP client for making API requests
-        """
         self.client = client
 
     def get_rankings(self, request: GetRankingsRequest) -> GetRankingsResponse:
-        """
-        Get rankings statistics.
-
-        Args:
-            request: GetRankingsRequest with instrument type and optional filters
-
-        Returns:
-            GetRankingsResponse containing the rankings data
-        """
         path = "/rankings/statistics"
 
         query_params = ""

@@ -12,12 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Example: List Portfolios
-
-Set INTX_ENVIRONMENT=sandbox to use sandbox, otherwise defaults to production.
-"""
-
 import json
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.portfolios import ListPortfoliosRequest
