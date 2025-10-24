@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Dict, Any
+from typing import Optional, List
+from intx_sdk.services.model import TransferResult
 
 
 @dataclass
@@ -27,4 +28,4 @@ class TransferFundsRequest:
 
 @dataclass
 class TransferFundsResponse:
-    response: Dict[str, Any]
+    transfer_result: TransferResult

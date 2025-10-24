@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
+from intx_sdk.services.model import InstrumentDetails
 
 
 @dataclass
@@ -23,4 +24,4 @@ class ListInstrumentsRequest:
 
 @dataclass
 class ListInstrumentsResponse:
-    response: Dict[str, Any]
+    instruments: List[InstrumentDetails]

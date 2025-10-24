@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
+from intx_sdk.services.model import PortfolioLoan
 
 
 @dataclass
@@ -25,4 +26,4 @@ class GetLoanInfoForPortfolioAssetRequest:
 
 @dataclass
 class GetLoanInfoForPortfolioAssetResponse:
-    response: Dict[str, Any]
+    portfolio_loan: PortfolioLoan

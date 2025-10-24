@@ -15,6 +15,17 @@
 from dataclasses import asdict
 from intx_sdk.client import Client
 from intx_sdk.utils import append_pagination_params, append_query_param
+from intx_sdk.services.model import (
+    CounterpartyIdResult,
+    CryptoAddressResult,
+    Transfer,
+    TransferPaginationResult,
+    TransfersResult,
+    CounterpartyValidation,
+    WithdrawToCounterpartyResult,
+    WithdrawToCryptoResult,
+    PortfolioInfo,
+)
 from .create_counterparty_id import CreateCounterpartyIdRequest, CreateCounterpartyIdResponse
 from .create_crypto_address import CreateCryptoAddressRequest, CreateCryptoAddressResponse
 from .get_transfer import GetTransferRequest, GetTransferResponse
@@ -49,7 +60,9 @@ class TransfersService:
         path = "/transfers/create-counterparty-id"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return CreateCounterpartyIdResponse(response=response.json())
+        data = response.json()
+        counterparty_id_result = CounterpartyIdResult(**data)
+        return CreateCounterpartyIdResponse(counterparty_id_result=counterparty_id_result)
 
     def create_crypto_address(self, request: CreateCryptoAddressRequest) -> CreateCryptoAddressResponse:
         """
@@ -64,7 +77,9 @@ class TransfersService:
         path = "/transfers/address"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return CreateCryptoAddressResponse(response=response.json())
+        data = response.json()
+        crypto_address_result = CryptoAddressResult(**data)
+        return CreateCryptoAddressResponse(crypto_address_result=crypto_address_result)
 
     def get_transfer(self, request: GetTransferRequest) -> GetTransferResponse:
         """
@@ -78,7 +93,14 @@ class TransfersService:
         """
         path = f"/transfers/{request.transfer_uuid}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetTransferResponse(response=response.json())
+        data = response.json()
+        # Handle nested portfolio info objects
+        if data.get('from_portfolio'):
+            data['from_portfolio'] = PortfolioInfo(**data['from_portfolio'])
+        if data.get('to_portfolio'):
+            data['to_portfolio'] = PortfolioInfo(**data['to_portfolio'])
+        transfer = Transfer(**data)
+        return GetTransferResponse(transfer=transfer)
 
     def list_transfers(self, request: ListTransfersRequest) -> ListTransfersResponse:
         """
@@ -100,7 +122,10 @@ class TransfersService:
         query_params = append_query_param(query_params, 'type', request.type)
 
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return ListTransfersResponse(response=response.json())
+        data = response.json()
+        pagination = TransferPaginationResult(**data['pagination'])
+        transfers_result = TransfersResult(pagination=pagination, results=data.get('results', []))
+        return ListTransfersResponse(transfers_result=transfers_result)
 
     def validate_counterparty_id(self, request: ValidateCounterpartyIdRequest) -> ValidateCounterpartyIdResponse:
         """
@@ -115,7 +140,9 @@ class TransfersService:
         path = "/transfers/validate-counterparty-id"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return ValidateCounterpartyIdResponse(response=response.json())
+        data = response.json()
+        counterparty_validation = CounterpartyValidation(**data)
+        return ValidateCounterpartyIdResponse(counterparty_validation=counterparty_validation)
 
     def withdraw_to_counterparty_id(self, request: WithdrawToCounterpartyIdRequest) -> WithdrawToCounterpartyIdResponse:
         """
@@ -130,7 +157,9 @@ class TransfersService:
         path = "/transfers/withdraw/counterparty"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return WithdrawToCounterpartyIdResponse(response=response.json())
+        data = response.json()
+        withdraw_result = WithdrawToCounterpartyResult(**data)
+        return WithdrawToCounterpartyIdResponse(withdraw_result=withdraw_result)
 
     def withdraw_to_crypto_address(self, request: WithdrawToCryptoAddressRequest) -> WithdrawToCryptoAddressResponse:
         """
@@ -145,4 +174,6 @@ class TransfersService:
         path = "/transfers/withdraw"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return WithdrawToCryptoAddressResponse(response=response.json())
+        data = response.json()
+        withdraw_result = WithdrawToCryptoResult(**data)
+        return WithdrawToCryptoAddressResponse(withdraw_result=withdraw_result)

@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
+from intx_sdk.services.model import FeeTier
 
 
 @dataclass
@@ -23,4 +24,4 @@ class ListFeeRateTiersRequest:
 
 @dataclass
 class ListFeeRateTiersResponse:
-    response: Dict[str, Any]
+    fee_tiers: List[FeeTier]

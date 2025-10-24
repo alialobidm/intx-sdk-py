@@ -15,6 +15,7 @@
 from dataclasses import asdict
 from intx_sdk.client import Client
 from intx_sdk.utils import append_pagination_params, append_query_param
+from intx_sdk.services.model import Order
 from .cancel_order import CancelOrderRequest, CancelOrderResponse
 from .cancel_orders import CancelOrdersRequest, CancelOrdersResponse
 from .create_order import CreateOrderRequest, CreateOrderResponse
@@ -24,96 +25,46 @@ from .modify_open_order import ModifyOpenOrderRequest, ModifyOpenOrderResponse
 
 
 class OrdersService:
-    """Service for order-related operations."""
-
     def __init__(self, client: Client):
-        """
-        Initialize the OrdersService.
-
-        Args:
-            client: The HTTP client for making API requests
-        """
         self.client = client
 
     def cancel_order(self, request: CancelOrderRequest) -> CancelOrderResponse:
-        """
-        Cancel a specific order.
-
-        Args:
-            request: CancelOrderRequest with order ID and portfolio
-
-        Returns:
-            CancelOrderResponse containing the cancellation result
-        """
         path = f"/orders/{request.id}"
         query = f"portfolio={request.portfolio}"
         response = self.client.request("DELETE", path, query=query, allowed_status_codes=request.allowed_status_codes)
-        return CancelOrderResponse(response=response.json())
+        data = response.json()
+        order = Order(**data)
+        return CancelOrderResponse(order=order)
 
     def cancel_orders(self, request: CancelOrdersRequest) -> CancelOrdersResponse:
-        """
-        Cancel multiple orders with optional filters.
-
-        Args:
-            request: CancelOrdersRequest with portfolio and optional filters
-
-        Returns:
-            CancelOrdersResponse containing the cancellation results
-        """
         path = "/orders"
-
         query_params = append_query_param("", 'portfolio', request.portfolio)
         query_params = append_query_param(query_params, 'instrument', request.instrument)
         query_params = append_query_param(query_params, 'side', request.side)
         query_params = append_query_param(query_params, 'instrument_type', request.instrument_type)
-
         response = self.client.request("DELETE", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return CancelOrdersResponse(response=response.json())
+        data = response.json()
+        orders = [Order(**order) for order in data]
+        return CancelOrdersResponse(orders=orders)
 
     def create_order(self, request: CreateOrderRequest) -> CreateOrderResponse:
-        """
-        Create a new order.
-
-        Args:
-            request: CreateOrderRequest with order details
-
-        Returns:
-            CreateOrderResponse containing the created order
-        """
         path = "/orders"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return CreateOrderResponse(response=response.json())
+        data = response.json()
+        order = Order(**data)
+        return CreateOrderResponse(order=order)
 
     def get_order_details(self, request: GetOrderDetailsRequest) -> GetOrderDetailsResponse:
-        """
-        Get details for a specific order.
-
-        Args:
-            request: GetOrderDetailsRequest with order ID and portfolio
-
-        Returns:
-            GetOrderDetailsResponse containing the order details
-        """
         path = f"/orders/{request.order_id}"
-
         query_params = append_query_param("", 'portfolio', request.portfolio)
-
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return GetOrderDetailsResponse(response=response.json())
+        data = response.json()
+        order = Order(**data)
+        return GetOrderDetailsResponse(order=order)
 
     def list_open_orders(self, request: ListOpenOrdersRequest) -> ListOpenOrdersResponse:
-        """
-        List open orders with optional filters.
-
-        Args:
-            request: ListOpenOrdersRequest with optional filters
-
-        Returns:
-            ListOpenOrdersResponse containing the list of open orders
-        """
         path = "/orders"
-
         query_params = append_pagination_params("", request.pagination)
         query_params = append_query_param(query_params, 'portfolio', request.portfolio)
         query_params = append_query_param(query_params, 'instrument', request.instrument)
@@ -123,21 +74,15 @@ class OrdersService:
         query_params = append_query_param(query_params, 'order_type', request.order_type)
         query_params = append_query_param(query_params, 'side', request.side)
         query_params = append_query_param(query_params, 'ref_datetime', request.ref_datetime)
-
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return ListOpenOrdersResponse(response=response.json())
+        data = response.json()
+        orders = [Order(**order) for order in data]
+        return ListOpenOrdersResponse(orders=orders)
 
     def modify_open_order(self, request: ModifyOpenOrderRequest) -> ModifyOpenOrderResponse:
-        """
-        Modify an open order.
-
-        Args:
-            request: ModifyOpenOrderRequest with order modifications
-
-        Returns:
-            ModifyOpenOrderResponse containing the modified order
-        """
         path = f"/orders/{request.id}"
         body = {k: v for k, v in asdict(request).items() if v is not None and k not in ['allowed_status_codes', 'id']}
         response = self.client.request("PUT", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return ModifyOpenOrderResponse(response=response.json())
+        data = response.json()
+        order = Order(**data)
+        return ModifyOpenOrderResponse(order=order)

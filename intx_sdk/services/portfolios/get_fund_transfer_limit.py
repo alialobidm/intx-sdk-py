@@ -13,17 +13,16 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List
-from intx_sdk.services.model import Portfolio
+from typing import List, Optional
 
 
 @dataclass
-class EnableDisableAutoMarginRequest:
+class GetFundTransferLimitRequest:
     portfolio: str
-    enabled: str
+    asset: str
     allowed_status_codes: Optional[List[int]] = None
 
 
 @dataclass
-class EnableDisableAutoMarginResponse:
-    portfolio: Portfolio
+class GetFundTransferLimitResponse:
+    max_portfolio_transfer_amount: str

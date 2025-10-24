@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Any
+from typing import List, Optional
+from intx_sdk.services.model import Transfer
 
 
 @dataclass
@@ -24,4 +25,4 @@ class GetTransferRequest:
 
 @dataclass
 class GetTransferResponse:
-    response: Any
+    transfer: Transfer

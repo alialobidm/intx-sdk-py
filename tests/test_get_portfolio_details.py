@@ -14,47 +14,78 @@
 
 import unittest
 from unittest.mock import patch, MagicMock
-from intx_sdk.get_portfolio_details import IntxClient, GetPortfolioDetailsRequest, Credentials
-from test_constants import BASE_URL
+from intx_sdk import IntxServicesClient
+from intx_sdk.services.portfolios import GetPortfolioDetailsRequest
+from intx_sdk.credentials import Credentials
+from tests.test_constants import BASE_URL
 
 
 class TestGetPortfolioDetails(unittest.TestCase):
 
-    @patch('get_portfolio_details.Client')
-    def test_get_portfolio_details_success(self, MockClient):
+    @patch('intx_sdk.client.Client.request')
+    def test_get_portfolio_details_success(self, mock_request):
         mock_response = MagicMock()
         mock_response.json.return_value = {
-            "portfolio_id": "dummy_portfolio_id",
-            "name": "Test Portfolio",
-            "status": "ACTIVE",
-            "balance": "1000.00"
+            "summary": {
+                "collateral": "1000.00",
+                "unrealized_pnl": "0.0",
+                "unrealized_pnl_percent": "0.0",
+                "position_notional": "0.0",
+                "open_position_notional": "0.0",
+                "pending_fees": "0.0",
+                "borrow": "0.0",
+                "accrued_interest": "0.0",
+                "rolling_debt": "0.0",
+                "balance": "1000.00",
+                "buying_power": "1000.00",
+                "portfolio_initial_margin": 0.0,
+                "portfolio_current_margin": 0.0,
+                "portfolio_maintenance_margin": 0.0,
+                "portfolio_close_out_margin": 0.0,
+                "in_liquidation": False,
+                "unrealized_pnl_notional": 0.0,
+                "portfolio_initial_margin_notional": 0.0,
+                "portfolio_maintenance_margin_notional": 0.0,
+                "portfolio_close_out_margin_notional": 0.0,
+                "margin_override": 0.0,
+                "lock_up_initial_margin": 0.0,
+                "loan_collateral_requirement": "0.0",
+                "position_offset_notional": 0.0
+            },
+            "balances": [],
+            "positions": []
         }
-        MockClient.return_value.request.return_value = mock_response
+        mock_request.return_value = mock_response
 
-        credentials = Credentials.from_env("INTX_CREDENTIALS")
-        intx_client = IntxClient(credentials, base_url=BASE_URL)
+        credentials = Credentials(
+            access_key="test_key",
+            passphrase="test_passphrase",
+            signing_key="test_signing_key"
+        )
+        client = IntxServicesClient(credentials, base_url=BASE_URL)
 
         request = GetPortfolioDetailsRequest(portfolio="dummy_portfolio_id")
-        response = intx_client.get_portfolio_details(request)
+        response = client.portfolios.get_portfolio_details(request)
 
-        self.assertEqual(response.response['portfolio_id'], "dummy_portfolio_id")
-        self.assertEqual(response.response['name'], "Test Portfolio")
-        self.assertEqual(response.response['status'], "ACTIVE")
-        self.assertEqual(response.response['balance'], "1000.00")
+        self.assertEqual(response.portfolio_detail.summary.balance, "1000.00")
+        self.assertEqual(response.portfolio_detail.summary.collateral, "1000.00")
+        self.assertIsInstance(response.portfolio_detail.balances, list)
+        self.assertIsInstance(response.portfolio_detail.positions, list)
 
-    @patch('get_portfolio_details.Client')
-    def test_get_portfolio_details_failure(self, MockClient):
-        mock_response = MagicMock()
-        mock_response.json.side_effect = Exception("API error")
+    @patch('intx_sdk.client.Client.request')
+    def test_get_portfolio_details_failure(self, mock_request):
+        mock_request.side_effect = Exception("API error")
 
-        MockClient.return_value.request.side_effect = mock_response.json.side_effect
-
-        credentials = Credentials.from_env("INTX_CREDENTIALS")
-        intx_client = IntxClient(credentials, base_url="https://api-n5e1.coinbase.com/api/v1")
+        credentials = Credentials(
+            access_key="test_key",
+            passphrase="test_passphrase",
+            signing_key="test_signing_key"
+        )
+        client = IntxServicesClient(credentials, base_url="https://api-n5e1.coinbase.com/api/v1")
 
         request = GetPortfolioDetailsRequest(portfolio="dummy_portfolio_id")
         with self.assertRaises(Exception) as context:
-            intx_client.get_portfolio_details(request)
+            client.portfolios.get_portfolio_details(request)
 
         self.assertTrue('API error' in str(context.exception))
 

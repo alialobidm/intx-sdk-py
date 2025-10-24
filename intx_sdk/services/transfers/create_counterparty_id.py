@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Any
+from typing import Optional, List
+from intx_sdk.services.model import CounterpartyIdResult
 
 
 @dataclass
@@ -24,4 +25,4 @@ class CreateCounterpartyIdRequest:
 
 @dataclass
 class CreateCounterpartyIdResponse:
-    response: Any
+    counterparty_id_result: CounterpartyIdResult

@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Any
+from typing import Optional, List
+from intx_sdk.services.model import CryptoAddressResult
 
 
 @dataclass
@@ -26,4 +27,4 @@ class CreateCryptoAddressRequest:
 
 @dataclass
 class CreateCryptoAddressResponse:
-    response: Any
+    crypto_address_result: CryptoAddressResult

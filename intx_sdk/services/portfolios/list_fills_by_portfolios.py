@@ -13,8 +13,9 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 from intx_sdk.utils import PaginationParams
+from intx_sdk.services.model import PortfolioFillsResult
 
 
 @dataclass
@@ -31,4 +32,4 @@ class ListFillsByPortfoliosRequest:
 
 @dataclass
 class ListFillsByPortfoliosResponse:
-    response: Dict[str, Any]
+    fills_result: PortfolioFillsResult

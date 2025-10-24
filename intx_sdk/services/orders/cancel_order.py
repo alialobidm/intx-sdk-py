@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Any
+from typing import Optional, List
+from intx_sdk.services.model import Order
 
 
 @dataclass
@@ -25,4 +26,4 @@ class CancelOrderRequest:
 
 @dataclass
 class CancelOrderResponse:
-    response: Any
+    order: Order

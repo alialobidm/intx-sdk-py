@@ -14,6 +14,7 @@
 
 from intx_sdk.client import Client
 from intx_sdk.utils import append_query_param, append_pagination_params
+from intx_sdk.services.model import Aggregation, DailyVolume, Pagination, FundingRate, InstrumentDetails, Quote
 from .get_aggregated_candles import GetAggregatedCandlesRequest, GetAggregatedCandlesResponse
 from .get_daily_trading_volumes import GetDailyTradingVolumesRequest, GetDailyTradingVolumesResponse
 from .get_historical_funding_rates import GetHistoricalFundingRatesRequest, GetHistoricalFundingRatesResponse
@@ -23,109 +24,56 @@ from .list_instruments import ListInstrumentsRequest, ListInstrumentsResponse
 
 
 class InstrumentsService:
-    """Service for instrument-related operations."""
-
     def __init__(self, client: Client):
-        """
-        Initialize the InstrumentsService.
-
-        Args:
-            client: The HTTP client for making API requests
-        """
         self.client = client
 
     def get_aggregated_candles(self, request: GetAggregatedCandlesRequest) -> GetAggregatedCandlesResponse:
-        """
-        Get aggregated candle data for an instrument.
-
-        Args:
-            request: GetAggregatedCandlesRequest with instrument, granularity, start, and optional end
-
-        Returns:
-            GetAggregatedCandlesResponse containing the candle data
-        """
         path = f"/instruments/{request.instrument}/candles"
-
         query_params = append_query_param("", 'granularity', request.granularity)
         query_params = append_query_param(query_params, 'start', request.start)
         query_params = append_query_param(query_params, 'end', request.end)
-
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return GetAggregatedCandlesResponse(response=response.json())
+        data = response.json()
+        aggregations = [Aggregation(**agg) for agg in data.get("aggregations", [])]
+        return GetAggregatedCandlesResponse(aggregations=aggregations)
 
     def get_daily_trading_volumes(self, request: GetDailyTradingVolumesRequest) -> GetDailyTradingVolumesResponse:
-        """
-        Get daily trading volumes for instruments.
-
-        Args:
-            request: GetDailyTradingVolumesRequest with instruments, optional time_from, show_other, and pagination
-
-        Returns:
-            GetDailyTradingVolumesResponse containing the trading volume data
-        """
         path = "/instruments/volumes/daily"
-
         query_params = append_pagination_params("", request.pagination)
         query_params = append_query_param(query_params, 'instruments', request.instruments)
         query_params = append_query_param(query_params, 'time_from', request.time_from)
         query_params = append_query_param(query_params, 'show_other', request.show_other)
-
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return GetDailyTradingVolumesResponse(response=response.json())
+        data = response.json()
+        pagination = Pagination(**data.get("pagination", {}))
+        results = [DailyVolume(**vol) for vol in data.get("results", [])]
+        return GetDailyTradingVolumesResponse(pagination=pagination, results=results)
 
     def get_historical_funding_rates(self, request: GetHistoricalFundingRatesRequest) -> GetHistoricalFundingRatesResponse:
-        """
-        Get historical funding rates for an instrument.
-
-        Args:
-            request: GetHistoricalFundingRatesRequest with instrument and optional pagination
-
-        Returns:
-            GetHistoricalFundingRatesResponse containing the funding rate history
-        """
         path = f"/instruments/{request.instrument}/funding"
         query_params = append_pagination_params("", request.pagination)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return GetHistoricalFundingRatesResponse(response=response.json())
+        data = response.json()
+        funding_rates = [FundingRate(**rate) for rate in data]
+        return GetHistoricalFundingRatesResponse(funding_rates=funding_rates)
 
     def get_instrument_details(self, request: GetInstrumentDetailsRequest) -> GetInstrumentDetailsResponse:
-        """
-        Get details for a specific instrument.
-
-        Args:
-            request: GetInstrumentDetailsRequest with instrument
-
-        Returns:
-            GetInstrumentDetailsResponse containing the instrument details
-        """
         path = f"/instruments/{request.instrument}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetInstrumentDetailsResponse(response=response.json())
+        data = response.json()
+        instrument = InstrumentDetails(**data)
+        return GetInstrumentDetailsResponse(instrument=instrument)
 
     def get_quote_per_instrument(self, request: GetQuotePerInstrumentRequest) -> GetQuotePerInstrumentResponse:
-        """
-        Get quote data for a specific instrument.
-
-        Args:
-            request: GetQuotePerInstrumentRequest with instrument
-
-        Returns:
-            GetQuotePerInstrumentResponse containing the quote data
-        """
         path = f"/instruments/{request.instrument}/quote"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetQuotePerInstrumentResponse(response=response.json())
+        data = response.json()
+        quote = Quote(**data)
+        return GetQuotePerInstrumentResponse(quote=quote)
 
     def list_instruments(self, request: ListInstrumentsRequest) -> ListInstrumentsResponse:
-        """
-        List all available instruments.
-
-        Args:
-            request: ListInstrumentsRequest with optional allowed_status_codes
-
-        Returns:
-            ListInstrumentsResponse containing the list of instruments
-        """
         path = "/instruments"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return ListInstrumentsResponse(response=response.json())
+        data = response.json()
+        instruments = [InstrumentDetails(**inst) for inst in data]
+        return ListInstrumentsResponse(instruments=instruments)

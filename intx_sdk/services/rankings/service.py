@@ -14,6 +14,7 @@
 
 from intx_sdk.client import Client
 from intx_sdk.utils import append_query_param
+from intx_sdk.services.model import Rankings, RankingStatistics, RankingStatistic
 from .get_rankings import GetRankingsRequest, GetRankingsResponse
 
 
@@ -50,4 +51,10 @@ class RankingsService:
             query_params = append_query_param(query_params, 'instruments', request.instruments)
 
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return GetRankingsResponse(response=response.json())
+        data = response.json()
+        maker = RankingStatistic(**data['statistics']['maker'])
+        taker = RankingStatistic(**data['statistics']['taker'])
+        total = RankingStatistic(**data['statistics']['total'])
+        statistics = RankingStatistics(maker=maker, taker=taker, total=total)
+        rankings = Rankings(last_updated=data['last_updated'], statistics=statistics)
+        return GetRankingsResponse(rankings=rankings)

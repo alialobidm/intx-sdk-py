@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Any
+from typing import Optional, List
+from intx_sdk.services.model import CounterpartyValidation
 
 
 @dataclass
@@ -24,4 +25,4 @@ class ValidateCounterpartyIdRequest:
 
 @dataclass
 class ValidateCounterpartyIdResponse:
-    response: Any
+    counterparty_validation: CounterpartyValidation

@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
+from intx_sdk.services.model import IndexPrice
 
 
 @dataclass
@@ -24,4 +25,4 @@ class GetIndexPriceRequest:
 
 @dataclass
 class GetIndexPriceResponse:
-    response: Dict[str, Any]
+    price: IndexPrice

@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
+from intx_sdk.services.model import LoanPreview
 
 
 @dataclass
@@ -27,4 +28,4 @@ class PreviewLoanUpdateRequest:
 
 @dataclass
 class PreviewLoanUpdateResponse:
-    response: Dict[str, Any]
+    loan_preview: LoanPreview

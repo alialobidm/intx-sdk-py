@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Any
+from typing import List, Optional
+from intx_sdk.services.model import Rankings
 
 
 @dataclass
@@ -26,4 +27,4 @@ class GetRankingsRequest:
 
 @dataclass
 class GetRankingsResponse:
-    response: Any
+    rankings: Rankings

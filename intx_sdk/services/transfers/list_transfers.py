@@ -13,8 +13,9 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Any
+from typing import List, Optional
 from intx_sdk.utils import PaginationParams
+from intx_sdk.services.model import TransfersResult
 
 
 @dataclass
@@ -30,4 +31,4 @@ class ListTransfersRequest:
 
 @dataclass
 class ListTransfersResponse:
-    response: Any
+    transfers_result: TransfersResult

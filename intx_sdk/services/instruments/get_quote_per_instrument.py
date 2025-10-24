@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
+from intx_sdk.services.model import Quote
 
 
 @dataclass
@@ -24,4 +25,4 @@ class GetQuotePerInstrumentRequest:
 
 @dataclass
 class GetQuotePerInstrumentResponse:
-    response: Dict[str, Any]
+    quote: Quote

@@ -13,8 +13,9 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 from intx_sdk.utils import PaginationParams
+from intx_sdk.services.model import FundingRate
 
 
 @dataclass
@@ -26,4 +27,4 @@ class GetHistoricalFundingRatesRequest:
 
 @dataclass
 class GetHistoricalFundingRatesResponse:
-    response: Dict[str, Any]
+    funding_rates: List[FundingRate]

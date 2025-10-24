@@ -13,31 +13,17 @@
 # limitations under the License.
 
 from intx_sdk.client import Client
+from intx_sdk.services.model import FeeTier
 from .list_fee_rate_tiers import ListFeeRateTiersRequest, ListFeeRateTiersResponse
 
 
 class FeeRatesService:
-    """Service for fee rate-related operations."""
-
     def __init__(self, client: Client):
-        """
-        Initialize the FeeRatesService.
-
-        Args:
-            client: The HTTP client for making API requests
-        """
         self.client = client
 
     def list_fee_rate_tiers(self, request: ListFeeRateTiersRequest) -> ListFeeRateTiersResponse:
-        """
-        List all fee rate tiers.
-
-        Args:
-            request: ListFeeRateTiersRequest with optional allowed_status_codes
-
-        Returns:
-            ListFeeRateTiersResponse containing the list of fee rate tiers
-        """
         path = "/fee-rate-tiers"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return ListFeeRateTiersResponse(response=response.json())
+        data = response.json()
+        fee_tiers = [FeeTier(**tier) for tier in data]
+        return ListFeeRateTiersResponse(fee_tiers=fee_tiers)

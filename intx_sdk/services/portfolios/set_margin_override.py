@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Dict, Any
+from typing import Optional, List
+from intx_sdk.services.model import MarginOverrideResult
 
 
 @dataclass
@@ -25,4 +26,4 @@ class SetMarginOverrideRequest:
 
 @dataclass
 class SetMarginOverrideResponse:
-    response: Dict[str, Any]
+    margin_override_result: MarginOverrideResult

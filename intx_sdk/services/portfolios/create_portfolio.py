@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Any
+from typing import Optional, List
+from intx_sdk.services.model import Portfolio
 
 
 @dataclass
@@ -24,4 +25,4 @@ class CreatePortfolioRequest:
 
 @dataclass
 class CreatePortfolioResponse:
-    response: Any
+    portfolio: Portfolio

@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Any
+from typing import List, Optional
+from intx_sdk.services.model import PositionOffset
 
 
 @dataclass
@@ -23,4 +24,4 @@ class ListPositionOffsetsRequest:
 
 @dataclass
 class ListPositionOffsetsResponse:
-    response: Any
+    position_offsets: List[PositionOffset]

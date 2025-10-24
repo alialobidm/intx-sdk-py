@@ -14,7 +14,7 @@
 
 from dataclasses import dataclass
 from typing import Optional, List, Any
-
+from intx_sdk.services.model import Portfolio
 
 @dataclass
 class EnableDisableCrossCollateralRequest:
@@ -25,4 +25,4 @@ class EnableDisableCrossCollateralRequest:
 
 @dataclass
 class EnableDisableCrossCollateralResponse:
-    response: Any
+    portfolio: Portfolio

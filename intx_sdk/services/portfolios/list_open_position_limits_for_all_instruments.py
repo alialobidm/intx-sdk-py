@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
+from intx_sdk.services.model import OpenPositionLimit
 
 
 @dataclass
@@ -24,4 +25,4 @@ class ListOpenPositionLimitsForAllInstrumentsRequest:
 
 @dataclass
 class ListOpenPositionLimitsForAllInstrumentsResponse:
-    response: Dict[str, Any]
+    position_limits: List[OpenPositionLimit]

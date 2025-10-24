@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Any
+from typing import Optional, List
+from intx_sdk.services.model import Order
 
 
 @dataclass
@@ -38,4 +39,4 @@ class CreateOrderRequest:
 
 @dataclass
 class CreateOrderResponse:
-    response: Any
+    order: Order

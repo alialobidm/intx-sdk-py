@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Optional, List, Any
+from typing import Optional, List
+from intx_sdk.services.model import WithdrawToCounterpartyResult
 
 
 @dataclass
@@ -28,4 +29,4 @@ class WithdrawToCounterpartyIdRequest:
 
 @dataclass
 class WithdrawToCounterpartyIdResponse:
-    response: Any
+    withdraw_result: WithdrawToCounterpartyResult

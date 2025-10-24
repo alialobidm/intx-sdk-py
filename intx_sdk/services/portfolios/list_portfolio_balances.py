@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
+from intx_sdk.services.model import AssetBalance
 
 
 @dataclass
@@ -24,4 +25,4 @@ class ListPortfolioBalancesRequest:
 
 @dataclass
 class ListPortfolioBalancesResponse:
-    response: Dict[str, Any]
+    balances: List[AssetBalance]
