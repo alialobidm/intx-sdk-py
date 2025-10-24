@@ -126,7 +126,12 @@ The [examples](examples/) directory contains sample code demonstrating various S
 - [get_portfolio_details.py](examples/get_portfolio_details.py) - Get detailed portfolio information
 - [get_portfolio_summary.py](examples/get_portfolio_summary.py) - Get portfolio summary
 - [list_portfolio_balances.py](examples/list_portfolio_balances.py) - List portfolio balances
+- [get_balance_for_portfolio_asset.py](examples/get_balance_for_portfolio_asset.py) - Get balance for specific asset
+- [list_portfolio_positions.py](examples/list_portfolio_positions.py) - List all positions in a portfolio
+- [get_position_for_instrument.py](examples/get_position_for_instrument.py) - Get position for specific instrument
 - [list_portfolio_fills.py](examples/list_portfolio_fills.py) - List portfolio fill history
+- [list_portfolio_fee_rates.py](examples/list_portfolio_fee_rates.py) - List fee rates for portfolios
+- [list_active_loans.py](examples/list_active_loans.py) - List active loans for a portfolio
 - [transfer_funds.py](examples/transfer_funds.py) - Transfer funds between portfolios
 
 ### Order Management
@@ -136,12 +141,17 @@ The [examples](examples/) directory contains sample code demonstrating various S
 - [modify_order.py](examples/modify_order.py) - Modify an open order
 - [cancel_order.py](examples/cancel_order.py) - Cancel an order
 
-### Market Data
+### Market Data & Instruments
 - [list_assets.py](examples/list_assets.py) - List supported assets
+- [get_asset_details.py](examples/get_asset_details.py) - Get details for a specific asset
 - [list_instruments.py](examples/list_instruments.py) - List trading instruments
+- [get_instrument_details.py](examples/get_instrument_details.py) - Get details for a specific instrument
+- [get_quote.py](examples/get_quote.py) - Get current quote for an instrument
+- [get_historical_funding_rates.py](examples/get_historical_funding_rates.py) - Get historical funding rates
 
 ### Transfers
 - [list_transfers.py](examples/list_transfers.py) - List transfers
+- [get_transfer.py](examples/get_transfer.py) - Get details for a specific transfer
 - [withdraw_to_crypto_address.py](examples/withdraw_to_crypto_address.py) - Withdraw to a crypto address
 
 ### Running Examples
