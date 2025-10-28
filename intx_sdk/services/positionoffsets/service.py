@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from intx_sdk.client import Client
-from intx_sdk.services.model import PositionOffset
 from .list_position_offsets import ListPositionOffsetsRequest, ListPositionOffsetsResponse
 
 
@@ -24,6 +23,4 @@ class PositionOffsetsService:
     def list_position_offsets(self, request: ListPositionOffsetsRequest) -> ListPositionOffsetsResponse:
         path = "/position-offsets"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        position_offsets = [PositionOffset(**offset) for offset in data.get('position_offsets', [])]
-        return ListPositionOffsetsResponse(position_offsets=position_offsets)
+        return ListPositionOffsetsResponse(**response.json())

@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from intx_sdk.client import Client
-from intx_sdk.services.model import Asset, SupportedNetwork
 from .list_assets import ListAssetsRequest, ListAssetsResponse
 from .get_asset_details import GetAssetDetailsRequest, GetAssetDetailsResponse
 from .get_supported_networks import GetSupportedNetworksRequest, GetSupportedNetworksResponse
@@ -26,20 +25,14 @@ class AssetsService:
     def list_assets(self, request: ListAssetsRequest) -> ListAssetsResponse:
         path = "/assets"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        assets = [Asset(**asset) for asset in data.get("assets", [])]
-        return ListAssetsResponse(assets=assets)
+        return ListAssetsResponse(assets=response.json())
 
     def get_asset_details(self, request: GetAssetDetailsRequest) -> GetAssetDetailsResponse:
         path = f"/assets/{request.asset}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        asset = Asset(**data.get("asset", data))
-        return GetAssetDetailsResponse(asset=asset)
+        return GetAssetDetailsResponse(**response.json())
 
     def get_supported_networks(self, request: GetSupportedNetworksRequest) -> GetSupportedNetworksResponse:
         path = f"/assets/{request.asset}/networks"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        networks = [SupportedNetwork(**network) for network in data.get("networks", [])]
-        return GetSupportedNetworksResponse(networks=networks)
+        return GetSupportedNetworksResponse(networks=response.json())

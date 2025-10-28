@@ -14,7 +14,6 @@
 
 from intx_sdk.client import Client
 from intx_sdk.utils import append_query_param, append_pagination_params
-from intx_sdk.services.model import Aggregation, IndexComposition, IndexPrice
 from .get_index_candles import GetIndexCandlesRequest, GetIndexCandlesResponse
 from .get_index_composition import GetIndexCompositionRequest, GetIndexCompositionResponse
 from .get_index_composition_history import GetIndexCompositionHistoryRequest, GetIndexCompositionHistoryResponse
@@ -32,29 +31,21 @@ class IndexService:
         if request.end:
             query_params = append_query_param(query_params, 'end', request.end)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        aggregations = [Aggregation(**agg) for agg in data.get("aggregations", [])]
-        return GetIndexCandlesResponse(aggregations=aggregations)
+        return GetIndexCandlesResponse(**response.json())
 
     def get_index_composition(self, request: GetIndexCompositionRequest) -> GetIndexCompositionResponse:
         path = f"/index/{request.index}/composition"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        composition = IndexComposition(**data)
-        return GetIndexCompositionResponse(composition=composition)
+        return GetIndexCompositionResponse(**response.json())
 
     def get_index_composition_history(self, request: GetIndexCompositionHistoryRequest) -> GetIndexCompositionHistoryResponse:
         path = f"/index/{request.index}/composition-history"
         query_params = append_query_param("", 'time_from', request.time_from)
         query_params = append_pagination_params(query_params, request.pagination)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        compositions = [IndexComposition(**comp) for comp in data.get("compositions", [])]
-        return GetIndexCompositionHistoryResponse(compositions=compositions)
+        return GetIndexCompositionHistoryResponse(**response.json())
 
     def get_index_price(self, request: GetIndexPriceRequest) -> GetIndexPriceResponse:
         path = f"/index/{request.index}/price"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        price = IndexPrice(**data)
-        return GetIndexPriceResponse(price=price)
+        return GetIndexPriceResponse(**response.json())

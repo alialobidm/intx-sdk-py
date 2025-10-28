@@ -14,7 +14,6 @@
 
 from intx_sdk.client import Client
 from intx_sdk.utils import append_query_param, append_pagination_params
-from intx_sdk.services.model import Aggregation, DailyVolume, Pagination, FundingRate, InstrumentDetails, Quote
 from .get_aggregated_candles import GetAggregatedCandlesRequest, GetAggregatedCandlesResponse
 from .get_daily_trading_volumes import GetDailyTradingVolumesRequest, GetDailyTradingVolumesResponse
 from .get_historical_funding_rates import GetHistoricalFundingRatesRequest, GetHistoricalFundingRatesResponse
@@ -33,9 +32,7 @@ class InstrumentsService:
         query_params = append_query_param(query_params, 'start', request.start)
         query_params = append_query_param(query_params, 'end', request.end)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        aggregations = [Aggregation(**agg) for agg in data.get("aggregations", [])]
-        return GetAggregatedCandlesResponse(aggregations=aggregations)
+        return GetAggregatedCandlesResponse(**response.json())
 
     def get_daily_trading_volumes(self, request: GetDailyTradingVolumesRequest) -> GetDailyTradingVolumesResponse:
         path = "/instruments/volumes/daily"
@@ -44,36 +41,25 @@ class InstrumentsService:
         query_params = append_query_param(query_params, 'time_from', request.time_from)
         query_params = append_query_param(query_params, 'show_other', request.show_other)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        pagination = Pagination(**data.get("pagination", {}))
-        results = [DailyVolume(**vol) for vol in data.get("results", [])]
-        return GetDailyTradingVolumesResponse(pagination=pagination, results=results)
+        return GetDailyTradingVolumesResponse(**response.json())
 
     def get_historical_funding_rates(self, request: GetHistoricalFundingRatesRequest) -> GetHistoricalFundingRatesResponse:
         path = f"/instruments/{request.instrument}/funding"
         query_params = append_pagination_params("", request.pagination)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        funding_rates = [FundingRate(**rate) for rate in data]
-        return GetHistoricalFundingRatesResponse(funding_rates=funding_rates)
+        return GetHistoricalFundingRatesResponse(**response.json())
 
     def get_instrument_details(self, request: GetInstrumentDetailsRequest) -> GetInstrumentDetailsResponse:
         path = f"/instruments/{request.instrument}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        instrument = InstrumentDetails(**data)
-        return GetInstrumentDetailsResponse(instrument=instrument)
+        return GetInstrumentDetailsResponse(**response.json())
 
     def get_quote_per_instrument(self, request: GetQuotePerInstrumentRequest) -> GetQuotePerInstrumentResponse:
         path = f"/instruments/{request.instrument}/quote"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        quote = Quote(**data)
-        return GetQuotePerInstrumentResponse(quote=quote)
+        return GetQuotePerInstrumentResponse(**response.json())
 
     def list_instruments(self, request: ListInstrumentsRequest) -> ListInstrumentsResponse:
         path = "/instruments"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        instruments = [InstrumentDetails(**inst) for inst in data]
-        return ListInstrumentsResponse(instruments=instruments)
+        return ListInstrumentsResponse(instruments=response.json())

@@ -15,7 +15,6 @@
 from dataclasses import asdict
 from intx_sdk.client import Client
 from intx_sdk.utils import append_pagination_params, append_query_param
-from intx_sdk.services.model import Order
 from .cancel_order import CancelOrderRequest, CancelOrderResponse
 from .cancel_orders import CancelOrdersRequest, CancelOrdersResponse
 from .create_order import CreateOrderRequest, CreateOrderResponse
@@ -32,9 +31,7 @@ class OrdersService:
         path = f"/orders/{request.id}"
         query = f"portfolio={request.portfolio}"
         response = self.client.request("DELETE", path, query=query, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        order = Order(**data)
-        return CancelOrderResponse(order=order)
+        return CancelOrderResponse(**response.json())
 
     def cancel_orders(self, request: CancelOrdersRequest) -> CancelOrdersResponse:
         path = "/orders"
@@ -43,25 +40,19 @@ class OrdersService:
         query_params = append_query_param(query_params, 'side', request.side)
         query_params = append_query_param(query_params, 'instrument_type', request.instrument_type)
         response = self.client.request("DELETE", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        orders = [Order(**order) for order in data]
-        return CancelOrdersResponse(orders=orders)
+        return CancelOrdersResponse(orders=response.json())
 
     def create_order(self, request: CreateOrderRequest) -> CreateOrderResponse:
         path = "/orders"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        order = Order(**data)
-        return CreateOrderResponse(order=order)
+        return CreateOrderResponse(**response.json())
 
     def get_order_details(self, request: GetOrderDetailsRequest) -> GetOrderDetailsResponse:
         path = f"/orders/{request.order_id}"
         query_params = append_query_param("", 'portfolio', request.portfolio)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        order = Order(**data)
-        return GetOrderDetailsResponse(order=order)
+        return GetOrderDetailsResponse(**response.json())
 
     def list_open_orders(self, request: ListOpenOrdersRequest) -> ListOpenOrdersResponse:
         path = "/orders"
@@ -75,14 +66,10 @@ class OrdersService:
         query_params = append_query_param(query_params, 'side', request.side)
         query_params = append_query_param(query_params, 'ref_datetime', request.ref_datetime)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        orders = [Order(**order) for order in data]
-        return ListOpenOrdersResponse(orders=orders)
+        return ListOpenOrdersResponse(**response.json())
 
     def modify_open_order(self, request: ModifyOpenOrderRequest) -> ModifyOpenOrderResponse:
         path = f"/orders/{request.id}"
         body = {k: v for k, v in asdict(request).items() if v is not None and k not in ['allowed_status_codes', 'id']}
         response = self.client.request("PUT", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        order = Order(**data)
-        return ModifyOpenOrderResponse(order=order)
+        return ModifyOpenOrderResponse(**response.json())

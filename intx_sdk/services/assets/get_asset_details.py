@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 from intx_sdk.services.model import Asset
 
@@ -25,4 +25,11 @@ class GetAssetDetailsRequest:
 
 @dataclass
 class GetAssetDetailsResponse:
-    asset: Asset
+    asset: Asset = field(default=None)
+
+    def __init__(self, **kwargs):
+        if 'asset' in kwargs:
+            asset_data = kwargs['asset']
+            self.asset = Asset(**asset_data) if isinstance(asset_data, dict) else asset_data
+        else:
+            self.asset = Asset(**kwargs)

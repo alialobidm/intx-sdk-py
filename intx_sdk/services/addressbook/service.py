@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from intx_sdk.client import Client
-from intx_sdk.services.model import AddressBookEntry
 from .get_address_book import GetAddressBookRequest, GetAddressBookResponse
 
 
@@ -24,6 +23,4 @@ class AddressBookService:
     def get_address_book(self, request: GetAddressBookRequest) -> GetAddressBookResponse:
         path = "/address-book"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        data = response.json()
-        address_book = [AddressBookEntry(**entry) for entry in data.get("address_book", [])]
-        return GetAddressBookResponse(address_book=address_book)
+        return GetAddressBookResponse(**response.json())

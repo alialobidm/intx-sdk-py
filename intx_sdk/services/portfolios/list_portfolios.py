@@ -25,4 +25,3 @@ class ListPortfoliosRequest:
 @dataclass
 class ListPortfoliosResponse:
     portfolios: List[Portfolio]
-

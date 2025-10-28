@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 from intx_sdk.utils import PaginationParams
 from intx_sdk.services.model import Order
@@ -34,4 +34,9 @@ class ListOpenOrdersRequest:
 
 @dataclass
 class ListOpenOrdersResponse:
-    orders: List[Order]
+    orders: List[Order] = field(default_factory=list)
+
+    def __init__(self, **kwargs):
+        # Handle paginated response with 'results' key
+        orders_data = kwargs.get('results', kwargs.get('orders', []))
+        self.orders = [Order(**order) if isinstance(order, dict) else order for order in orders_data]

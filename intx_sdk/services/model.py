@@ -90,12 +90,13 @@ class Asset:
     status: str
     collateral_weight: str
     supported_networks_enabled: bool
-    min_borrow_qty: str
-    max_borrow_qty: str
-    loan_collateral_requirement_multiplier: str
     ecosystem_collateral_limit_breached: bool
-    loan_initial_margin: str
-    max_loan_leverage: str
+    min_borrow_qty: Optional[str] = None
+    max_borrow_qty: Optional[str] = None
+    loan_collateral_requirement_multiplier: Optional[str] = None
+    loan_initial_margin: Optional[str] = None
+    max_loan_leverage: Optional[str] = None
+    account_collateral_limit: Optional[str] = None
 
 
 @dataclass
@@ -199,65 +200,68 @@ class DailyVolume:
 @dataclass
 class FundingRate:
     instrument_id: str
-    funding_rate: float
-    mark_price: float
+    funding_rate: str
+    mark_price: str
     event_time: str
 
 
 @dataclass
 class Quote:
-    best_bid_price: float
-    best_bid_size: float
-    best_ask_price: float
-    best_ask_size: float
-    trade_price: float
-    trade_qty: float
-    index_price: float
-    mark_price: float
-    settlement_price: float
-    limit_up: float
-    limit_down: float
-    predicted_funding: float
+    best_bid_price: str
+    best_bid_size: str
+    best_ask_size: str
+    trade_price: str
+    trade_qty: str
+    index_price: str
+    mark_price: str
+    settlement_price: str
+    limit_up: str
+    limit_down: str
+    predicted_funding: str
     timestamp: str
+    best_ask_price: Optional[str] = None
 
 
 @dataclass
 class InstrumentDetails:
-    instrument_id: int
+    instrument_id: str
     instrument_uuid: str
     symbol: str
     type: str
     mode: str
-    base_asset_id: int
+    base_asset_id: str
     base_asset_uuid: str
     base_asset_name: str
-    quote_asset_id: int
+    quote_asset_id: str
     quote_asset_uuid: str
     quote_asset_name: str
-    base_increment: float
-    quote_increment: float
+    base_increment: str
+    quote_increment: str
     price_band_percent: float
     market_order_percent: float
-    qty_24hr: float
-    notional_24hr: float
-    avg_daily_qty: float
-    avg_daily_notional: float
-    previous_day_qty: float
-    open_interest: float
+    qty_24hr: str
+    notional_24hr: str
+    avg_daily_qty: str
+    avg_daily_notional: str
+    avg_30day_notional: str
+    avg_30day_qty: str
+    previous_day_qty: str
+    open_interest: str
     position_limit_qty: str
     position_limit_adq_pct: float
-    position_notional_limit: str
-    open_interest_notional_limit: str
-    replacement_cost: float
+    replacement_cost: str
     base_imf: float
-    default_imf: float
-    min_notional_value: float
-    funding_interval: int
+    min_notional_value: str
+    min_quantity: str
+    funding_interval: str
     trading_state: str
     quote: dict
-    base_asset_multiplier: int
+    base_asset_multiplier: str
     underlying_type: str
-    rfq_maker_fee_rate: float
+    rfq_maker_fee_rate: str
+    position_notional_limit: Optional[str] = None
+    open_interest_notional_limit: Optional[str] = None
+    default_imf: Optional[float] = None
 
 
 @dataclass

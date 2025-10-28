@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 from intx_sdk.services.model import Asset
 
@@ -24,4 +24,7 @@ class ListAssetsRequest:
 
 @dataclass
 class ListAssetsResponse:
-    assets: List[Asset]
+    assets: List[Asset] = field(default_factory=list)
+
+    def __init__(self, assets):
+        self.assets = [Asset(**asset) if isinstance(asset, dict) else asset for asset in assets]

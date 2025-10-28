@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 from intx_sdk.services.model import SupportedNetwork
 
@@ -25,4 +25,7 @@ class GetSupportedNetworksRequest:
 
 @dataclass
 class GetSupportedNetworksResponse:
-    networks: List[SupportedNetwork]
+    networks: List[SupportedNetwork] = field(default_factory=list)
+
+    def __init__(self, networks):
+        self.networks = [SupportedNetwork(**network) if isinstance(network, dict) else network for network in networks]

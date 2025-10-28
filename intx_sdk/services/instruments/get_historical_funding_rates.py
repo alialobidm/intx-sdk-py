@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
-from typing import List, Optional
+from dataclasses import dataclass, field
+from typing import List, Optional, Any
 from intx_sdk.utils import PaginationParams
 from intx_sdk.services.model import FundingRate
 
@@ -27,4 +27,8 @@ class GetHistoricalFundingRatesRequest:
 
 @dataclass
 class GetHistoricalFundingRatesResponse:
-    funding_rates: List[FundingRate]
+    funding_rates: List[FundingRate] = field(default_factory=list)
+
+    def __init__(self, **kwargs):
+        results = kwargs.get('results', kwargs.get('funding_rates', []))
+        self.funding_rates = [FundingRate(**rate) if isinstance(rate, dict) else rate for rate in results]
