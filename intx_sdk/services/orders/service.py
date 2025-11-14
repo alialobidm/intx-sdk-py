@@ -66,7 +66,7 @@ class OrdersService:
         query_params = append_query_param(query_params, 'side', request.side)
         query_params = append_query_param(query_params, 'ref_datetime', request.ref_datetime)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return ListOpenOrdersResponse(**response.json())
+        return ListOpenOrdersResponse(orders=response.json())
 
     def modify_open_order(self, request: ModifyOpenOrderRequest) -> ModifyOpenOrderResponse:
         path = f"/orders/{request.id}"

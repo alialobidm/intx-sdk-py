@@ -23,4 +23,4 @@ class AddressBookService:
     def get_address_book(self, request: GetAddressBookRequest) -> GetAddressBookResponse:
         path = "/address-book"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetAddressBookResponse(**response.json())
+        return GetAddressBookResponse(address_book=response.json())

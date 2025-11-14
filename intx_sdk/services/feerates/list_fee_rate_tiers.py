@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import FeeTier
 
@@ -24,7 +24,4 @@ class ListFeeRateTiersRequest:
 
 @dataclass
 class ListFeeRateTiersResponse:
-    fee_tiers: List[FeeTier] = field(default_factory=list)
-
-    def __init__(self, fee_tiers):
-        self.fee_tiers = [FeeTier(**tier) if isinstance(tier, dict) else tier for tier in fee_tiers]
+    fee_tiers: List[FeeTier] = None

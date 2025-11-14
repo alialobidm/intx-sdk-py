@@ -28,4 +28,4 @@ class GetAggregatedCandlesRequest:
 
 @dataclass
 class GetAggregatedCandlesResponse:
-    aggregations: List[Aggregation]
+    aggregations: List[Aggregation] = None

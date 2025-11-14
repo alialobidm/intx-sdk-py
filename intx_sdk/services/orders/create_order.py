@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional, List
 from intx_sdk.services.model import Order
 
@@ -38,12 +38,5 @@ class CreateOrderRequest:
 
 
 @dataclass
-class CreateOrderResponse:
-    order: Order = field(default=None)
-
-    def __init__(self, **kwargs):
-        if 'order' in kwargs:
-            order_data = kwargs['order']
-            self.order = Order(**order_data) if isinstance(order_data, dict) else order_data
-        else:
-            self.order = Order(**kwargs)
+class CreateOrderResponse(Order):
+    pass

@@ -43,18 +43,18 @@ class TransfersService:
         path = "/transfers/create-counterparty-id"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return CreateCounterpartyIdResponse(**response.json())
+        return CreateCounterpartyIdResponse(counterparty_id_result=response.json())
 
     def create_crypto_address(self, request: CreateCryptoAddressRequest) -> CreateCryptoAddressResponse:
         path = "/transfers/address"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return CreateCryptoAddressResponse(**response.json())
+        return CreateCryptoAddressResponse(crypto_address_result=response.json())
 
     def get_transfer(self, request: GetTransferRequest) -> GetTransferResponse:
         path = f"/transfers/{request.transfer_uuid}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetTransferResponse(**response.json())
+        return GetTransferResponse(transfer=response.json())
 
     def list_transfers(self, request: ListTransfersRequest) -> ListTransfersResponse:
         path = "/transfers"
@@ -65,22 +65,22 @@ class TransfersService:
         query_params = append_query_param(query_params, 'status', request.status)
         query_params = append_query_param(query_params, 'type', request.type)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return ListTransfersResponse(**response.json())
+        return ListTransfersResponse(transfers_result=response.json())
 
     def validate_counterparty_id(self, request: ValidateCounterpartyIdRequest) -> ValidateCounterpartyIdResponse:
         path = "/transfers/validate-counterparty-id"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return ValidateCounterpartyIdResponse(**response.json())
+        return ValidateCounterpartyIdResponse(counterparty_validation=response.json())
 
     def withdraw_to_counterparty_id(self, request: WithdrawToCounterpartyIdRequest) -> WithdrawToCounterpartyIdResponse:
         path = "/transfers/withdraw/counterparty"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return WithdrawToCounterpartyIdResponse(**response.json())
+        return WithdrawToCounterpartyIdResponse(withdraw_result=response.json())
 
     def withdraw_to_crypto_address(self, request: WithdrawToCryptoAddressRequest) -> WithdrawToCryptoAddressResponse:
         path = "/transfers/withdraw"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return WithdrawToCryptoAddressResponse(**response.json())
+        return WithdrawToCryptoAddressResponse(withdraw_result=response.json())

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional, Any
 from intx_sdk.services.model import Quote
 
@@ -24,12 +24,5 @@ class GetQuotePerInstrumentRequest:
 
 
 @dataclass
-class GetQuotePerInstrumentResponse:
-    quote: Quote = field(default=None)
-
-    def __init__(self, **kwargs):
-        if 'quote' in kwargs:
-            q = kwargs['quote']
-            self.quote = Quote(**q) if isinstance(q, dict) else q
-        else:
-            self.quote = Quote(**kwargs)
+class GetQuotePerInstrumentResponse(Quote):
+    pass

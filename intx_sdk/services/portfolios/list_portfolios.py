@@ -24,4 +24,4 @@ class ListPortfoliosRequest:
 
 @dataclass
 class ListPortfoliosResponse:
-    portfolios: List[Portfolio]
+    portfolios: List[Portfolio] = None

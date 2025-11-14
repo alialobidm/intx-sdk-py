@@ -24,4 +24,4 @@ class ListPositionOffsetsRequest:
 
 @dataclass
 class ListPositionOffsetsResponse:
-    position_offsets: List[PositionOffset]
+    position_offsets: List[PositionOffset] = None

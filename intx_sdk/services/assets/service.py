@@ -30,7 +30,7 @@ class AssetsService:
     def get_asset_details(self, request: GetAssetDetailsRequest) -> GetAssetDetailsResponse:
         path = f"/assets/{request.asset}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetAssetDetailsResponse(**response.json())
+        return GetAssetDetailsResponse(asset=response.json())
 
     def get_supported_networks(self, request: GetSupportedNetworksRequest) -> GetSupportedNetworksResponse:
         path = f"/assets/{request.asset}/networks"

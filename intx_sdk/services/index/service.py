@@ -31,21 +31,21 @@ class IndexService:
         if request.end:
             query_params = append_query_param(query_params, 'end', request.end)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return GetIndexCandlesResponse(**response.json())
+        return GetIndexCandlesResponse(aggregations=response.json())
 
     def get_index_composition(self, request: GetIndexCompositionRequest) -> GetIndexCompositionResponse:
         path = f"/index/{request.index}/composition"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetIndexCompositionResponse(**response.json())
+        return GetIndexCompositionResponse(composition=response.json())
 
     def get_index_composition_history(self, request: GetIndexCompositionHistoryRequest) -> GetIndexCompositionHistoryResponse:
         path = f"/index/{request.index}/composition-history"
         query_params = append_query_param("", 'time_from', request.time_from)
         query_params = append_pagination_params(query_params, request.pagination)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return GetIndexCompositionHistoryResponse(**response.json())
+        return GetIndexCompositionHistoryResponse(compositions=response.json())
 
     def get_index_price(self, request: GetIndexPriceRequest) -> GetIndexPriceResponse:
         path = f"/index/{request.index}/price"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetIndexPriceResponse(**response.json())
+        return GetIndexPriceResponse(price=response.json())

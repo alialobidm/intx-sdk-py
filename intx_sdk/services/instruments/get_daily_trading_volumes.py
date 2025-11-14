@@ -29,5 +29,5 @@ class GetDailyTradingVolumesRequest:
 
 @dataclass
 class GetDailyTradingVolumesResponse:
-    pagination: Pagination
-    results: List[DailyVolume]
+    pagination: Pagination = None
+    results: List[DailyVolume] = None

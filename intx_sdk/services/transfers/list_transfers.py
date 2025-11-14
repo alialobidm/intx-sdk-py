@@ -31,4 +31,4 @@ class ListTransfersRequest:
 
 @dataclass
 class ListTransfersResponse:
-    transfers_result: TransfersResult
+    transfers_result: TransfersResult = None

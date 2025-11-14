@@ -25,4 +25,4 @@ class ListOpenPositionLimitsForAllInstrumentsRequest:
 
 @dataclass
 class ListOpenPositionLimitsForAllInstrumentsResponse:
-    position_limits: List[OpenPositionLimit]
+    position_limits: List[OpenPositionLimit] = None

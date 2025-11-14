@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional, List
 from intx_sdk.services.model import Order
 
@@ -28,7 +28,4 @@ class CancelOrdersRequest:
 
 @dataclass
 class CancelOrdersResponse:
-    orders: List[Order] = field(default_factory=list)
-
-    def __init__(self, orders):
-        self.orders = [Order(**order) if isinstance(order, dict) else order for order in orders]
+    orders: List[Order] = None

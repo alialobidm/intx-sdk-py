@@ -24,4 +24,4 @@ class ListPortfolioFeeRatesRequest:
 
 @dataclass
 class ListPortfolioFeeRatesResponse:
-    fee_rates: List[PortfolioFeeRate]
+    fee_rates: List[PortfolioFeeRate] = None

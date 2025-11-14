@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import AddressBookEntry
 
@@ -24,8 +24,4 @@ class GetAddressBookRequest:
 
 @dataclass
 class GetAddressBookResponse:
-    address_book: List[AddressBookEntry] = field(default_factory=list)
-
-    def __init__(self, **kwargs):
-        address_book_data = kwargs.get('address_book', [])
-        self.address_book = [AddressBookEntry(**entry) if isinstance(entry, dict) else entry for entry in address_book_data]
+    address_book: List[AddressBookEntry] = None

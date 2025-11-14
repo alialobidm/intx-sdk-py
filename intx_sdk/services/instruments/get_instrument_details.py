@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Any
+from dataclasses import dataclass
+from typing import List, Optional
 from intx_sdk.services.model import InstrumentDetails
 
 
@@ -24,12 +24,5 @@ class GetInstrumentDetailsRequest:
 
 
 @dataclass
-class GetInstrumentDetailsResponse:
-    instrument: InstrumentDetails = field(default=None)
-
-    def __init__(self, **kwargs):
-        if 'instrument' in kwargs:
-            inst = kwargs['instrument']
-            self.instrument = InstrumentDetails(**inst) if isinstance(inst, dict) else inst
-        else:
-            self.instrument = InstrumentDetails(**kwargs)
+class GetInstrumentDetailsResponse(InstrumentDetails):
+    pass

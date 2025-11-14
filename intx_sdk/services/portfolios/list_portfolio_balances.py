@@ -25,4 +25,4 @@ class ListPortfolioBalancesRequest:
 
 @dataclass
 class ListPortfolioBalancesResponse:
-    balances: List[AssetBalance]
+    balances: List[AssetBalance] = None

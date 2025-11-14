@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import Aggregation
 
@@ -28,8 +28,4 @@ class GetIndexCandlesRequest:
 
 @dataclass
 class GetIndexCandlesResponse:
-    aggregations: List[Aggregation] = field(default_factory=list)
-
-    def __init__(self, **kwargs):
-        aggregations_data = kwargs.get('aggregations', [])
-        self.aggregations = [Aggregation(**agg) if isinstance(agg, dict) else agg for agg in aggregations_data]
+    aggregations: List[Aggregation] = None

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import IndexPrice
 
@@ -25,11 +25,4 @@ class GetIndexPriceRequest:
 
 @dataclass
 class GetIndexPriceResponse:
-    price: IndexPrice = field(default=None)
-
-    def __init__(self, **kwargs):
-        if 'price' in kwargs:
-            price_data = kwargs['price']
-            self.price = IndexPrice(**price_data) if isinstance(price_data, dict) else price_data
-        else:
-            self.price = IndexPrice(**kwargs)
+    price: IndexPrice

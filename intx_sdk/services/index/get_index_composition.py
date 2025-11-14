@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import IndexComposition
 
@@ -25,11 +25,4 @@ class GetIndexCompositionRequest:
 
 @dataclass
 class GetIndexCompositionResponse:
-    composition: IndexComposition = field(default=None)
-
-    def __init__(self, **kwargs):
-        if 'composition' in kwargs:
-            comp = kwargs['composition']
-            self.composition = IndexComposition(**comp) if isinstance(comp, dict) else comp
-        else:
-            self.composition = IndexComposition(**kwargs)
+    composition: IndexComposition

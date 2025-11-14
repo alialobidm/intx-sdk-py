@@ -25,4 +25,4 @@ class ListActiveLoansForPortfolioRequest:
 
 @dataclass
 class ListActiveLoansForPortfolioResponse:
-    loans: List[PortfolioLoan]
+    loans: List[PortfolioLoan] = None

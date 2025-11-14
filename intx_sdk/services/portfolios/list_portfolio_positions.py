@@ -25,4 +25,4 @@ class ListPortfolioPositionsRequest:
 
 @dataclass
 class ListPortfolioPositionsResponse:
-    positions: List[PortfolioPosition]
+    positions: List[PortfolioPosition] = None
