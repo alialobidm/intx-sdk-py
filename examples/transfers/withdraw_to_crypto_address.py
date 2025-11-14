@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import argparse
+import os
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.transfers import WithdrawToCryptoAddressRequest
 
 
 def main():
     parser = argparse.ArgumentParser(description="Withdraw to crypto address")
-    parser.add_argument("--portfolio", required=True, help="Portfolio ID")
+    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
     parser.add_argument("--asset", required=True, help="Asset symbol")
     parser.add_argument("--amount", required=True, help="Amount to withdraw")
     parser.add_argument("--address", required=True, help="Destination crypto address")
@@ -27,7 +28,7 @@ def main():
     parser.add_argument("--add-network-fee-to-total", help="Add network fee to total (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = WithdrawToCryptoAddressRequest(
         portfolio=args.portfolio,

@@ -33,9 +33,37 @@ class Credentials:
         )
 
     @staticmethod
-    def from_env(variable_name: str) -> 'Credentials':
+    def from_env(variable_name: str = 'INTX_CREDENTIALS') -> 'Credentials':
+        # Lightweight .env loader (no external dependency). Loads only if not already in the environment.
+        dotenv_path = os.path.join(os.getcwd(), '.env')
+        if os.path.exists(dotenv_path):
+            try:
+                with open(dotenv_path, 'r') as f:
+                    for raw_line in f:
+                        line = raw_line.strip()
+                        if not line or line.startswith('#') or '=' not in line:
+                            continue
+                        key, value = line.split('=', 1)
+                        key = key.strip()
+                        value = value.strip()
+                        if key and key not in os.environ:
+                            os.environ[key] = value
+            except Exception:
+                # Silently ignore .env parsing issues to avoid breaking users that set envs externally
+                pass
+
+        # Prefer single JSON env var if present
         env_var = os.getenv(variable_name)
-        if not env_var:
-            raise EnvironmentError(
-                f"{variable_name} not set as environment variable")
-        return Credentials.from_json(env_var)
+        if env_var:
+            return Credentials.from_json(env_var)
+
+        # Fallback to three individual env vars
+        access_key = os.getenv('INTX_ACCESS_KEY')
+        passphrase = os.getenv('INTX_PASSPHRASE')
+        signing_key = os.getenv('INTX_SIGNING_KEY')
+        if access_key and passphrase and signing_key:
+            return Credentials(access_key=access_key, passphrase=passphrase, signing_key=signing_key)
+
+        raise EnvironmentError(
+            f"Credentials not found. Set {variable_name} as JSON or INTX_ACCESS_KEY, INTX_PASSPHRASE, INTX_SIGNING_KEY (consider using a .env)."
+        )

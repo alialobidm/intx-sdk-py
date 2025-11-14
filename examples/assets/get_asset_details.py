@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--asset", required=True, help="Asset symbol (e.g., BTC, USDC)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = GetAssetDetailsRequest(asset=args.asset)
 

@@ -70,66 +70,78 @@ class PortfoliosService:
     def list_portfolios(self, request: ListPortfoliosRequest) -> ListPortfoliosResponse:
         path = "/portfolios"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return ListPortfoliosResponse(portfolios=response.json())
+        data = response.json()
+        return ListPortfoliosResponse(portfolios=[Portfolio(**p) for p in data])
 
     def create_portfolio(self, request: CreatePortfolioRequest) -> CreatePortfolioResponse:
         path = "/portfolios"
         body = {"name": request.name}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return CreatePortfolioResponse(portfolio=response.json())
+        data = response.json()
+        return CreatePortfolioResponse(portfolio=Portfolio(**data))
 
     def acquire_or_repay_loan(self, request: AcquireOrRepayLoanRequest) -> AcquireOrRepayLoanResponse:
         path = f"/portfolios/{request.portfolio}/loans/{request.asset}"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return AcquireOrRepayLoanResponse(loan=response.json())
+        data = response.json()
+        return AcquireOrRepayLoanResponse(loan=AssetLoan(**data))
 
     def enable_disable_auto_margin(self, request: EnableDisableAutoMarginRequest) -> EnableDisableAutoMarginResponse:
         path = f"/portfolios/{request.portfolio}/auto-margin-enabled"
         body = {"enabled": request.enabled}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return EnableDisableAutoMarginResponse(portfolio=response.json())
+        data = response.json()
+        return EnableDisableAutoMarginResponse(portfolio=Portfolio(**data))
 
     def enable_disable_cross_collateral(self, request: EnableDisableCrossCollateralRequest) -> EnableDisableCrossCollateralResponse:
         path = f"/portfolios/{request.portfolio}/cross-collateral-enabled"
         body = {"enabled": request.enabled}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return EnableDisableCrossCollateralResponse(portfolio=response.json())
+        data = response.json()
+        return EnableDisableCrossCollateralResponse(portfolio=Portfolio(**data))
 
     def get_balance_for_portfolio_asset(self, request: GetBalanceForPortfolioAssetRequest) -> GetBalanceForPortfolioAssetResponse:
         path = f"/portfolios/{request.portfolio}/balances/{request.asset}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetBalanceForPortfolioAssetResponse(balance=response.json())
+        data = response.json()
+        return GetBalanceForPortfolioAssetResponse(balance=AssetBalance(**data))
 
     def get_fund_transfer_limit(self, request: GetFundTransferLimitRequest) -> GetFundTransferLimitResponse:
         path = f"/portfolios/transfer/{request.portfolio}/{request.asset}/transfer-limit"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetFundTransferLimitResponse(max_portfolio_transfer_amount=response.json())
+        data = response.json()
+        return GetFundTransferLimitResponse(max_portfolio_transfer_amount=data)
 
     def get_portfolio(self, request: GetPortfolioRequest) -> GetPortfolioResponse:
         path = f"/portfolios/{request.portfolio}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetPortfolioResponse(portfolio=response.json())
+        data = response.json()
+        return GetPortfolioResponse(portfolio=Portfolio(**data))
 
     def get_portfolio_details(self, request: GetPortfolioDetailsRequest) -> GetPortfolioDetailsResponse:
         path = f"/portfolios/{request.portfolio}/detail"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetPortfolioDetailsResponse(portfolio_detail=response.json())
+        data = response.json()
+        return GetPortfolioDetailsResponse(portfolio_detail=PortfolioDetail(**data))
 
     def get_portfolio_summary(self, request: GetPortfolioSummaryRequest) -> GetPortfolioSummaryResponse:
         path = f"/portfolios/{request.portfolio}/summary"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetPortfolioSummaryResponse(portfolio_summary=response.json())
+        data = response.json()
+        return GetPortfolioSummaryResponse(portfolio_summary=PortfolioSummary(**data))
 
     def get_position_for_portfolio_instrument(self, request: GetPositionForPortfolioInstrumentRequest) -> GetPositionForPortfolioInstrumentResponse:
         path = f"/portfolios/{request.portfolio}/positions/{request.instrument}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetPositionForPortfolioInstrumentResponse(position=response.json())
+        data = response.json()
+        return GetPositionForPortfolioInstrumentResponse(position=PortfolioPosition(**data))
 
     def list_portfolio_balances(self, request: ListPortfolioBalancesRequest) -> ListPortfolioBalancesResponse:
         path = f"/portfolios/{request.portfolio}/balances"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return ListPortfolioBalancesResponse(balances=response.json())
+        data = response.json()
+        return ListPortfolioBalancesResponse(balances=[AssetBalance(**b) for b in data])
 
     def list_portfolio_fills(self, request: ListPortfolioFillsRequest) -> ListPortfolioFillsResponse:
         path = f"/portfolios/{request.portfolio}/fills"
@@ -140,12 +152,14 @@ class PortfoliosService:
         query_params = append_query_param(query_params, 'ref_datetime', request.ref_datetime)
         query_params = append_query_param(query_params, 'time_from', request.time_from)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return ListPortfolioFillsResponse(fills_result=response.json())
+        data = response.json()
+        return ListPortfolioFillsResponse(fills_result=PortfolioFillsResult(**data))
 
     def list_portfolio_fee_rates(self, request: ListPortfolioFeeRatesRequest) -> ListPortfolioFeeRatesResponse:
         path = "/portfolios/fee-rates"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return ListPortfolioFeeRatesResponse(fee_rates=response.json())
+        data = response.json()
+        return ListPortfolioFeeRatesResponse(fee_rates=[PortfolioFeeRate(**f) for f in data])
 
     def transfer_position(self, request: TransferPositionRequest) -> TransferPositionResponse:
         path = "/portfolios/transfer-position"
@@ -157,7 +171,8 @@ class PortfoliosService:
             "side": request.side
         }
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return TransferPositionResponse(transfer_result=response.json())
+        data = response.json()
+        return TransferPositionResponse(transfer_result=TransferResult(**data))
 
     def transfer_funds(self, request: TransferFundsRequest) -> TransferFundsResponse:
         path = "/portfolios/transfer"
@@ -168,51 +183,60 @@ class PortfoliosService:
             "amount": request.amount
         }
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return TransferFundsResponse(transfer_result=response.json())
+        data = response.json()
+        return TransferFundsResponse(transfer_result=TransferResult(**data))
 
     def set_margin_override(self, request: SetMarginOverrideRequest) -> SetMarginOverrideResponse:
         path = "/portfolios/margin"
         body = {k: v for k, v in asdict(request).items() if v is not None and k != 'allowed_status_codes'}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return SetMarginOverrideResponse(margin_override_result=response.json())
+        data = response.json()
+        return SetMarginOverrideResponse(margin_override_result=MarginOverrideResult(**data))
 
     def preview_loan_update(self, request: PreviewLoanUpdateRequest) -> PreviewLoanUpdateResponse:
         path = f"/portfolios/{request.portfolio}/loans/{request.asset}/preview"
         body = {k: v for k, v in asdict(request).items() if v is not None and k not in ['portfolio', 'asset', 'allowed_status_codes']}
         response = self.client.request("POST", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return PreviewLoanUpdateResponse(loan_preview=response.json())
+        data = response.json()
+        return PreviewLoanUpdateResponse(loan_preview=LoanPreview(**data))
 
     def patch_portfolio(self, request: PatchPortfolioRequest) -> PatchPortfolioResponse:
         path = f"/portfolios/{request.portfolio}"
         body = {k: v for k, v in asdict(request).items() if v is not None and k not in ['portfolio', 'portfolio_name', 'allowed_status_codes']}
         response = self.client.request("PATCH", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return PatchPortfolioResponse(portfolio=response.json())
+        data = response.json()
+        return PatchPortfolioResponse(portfolio=Portfolio(**data))
 
     def list_portfolio_positions(self, request: ListPortfolioPositionsRequest) -> ListPortfolioPositionsResponse:
         path = f"/portfolios/{request.portfolio}/positions"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return ListPortfolioPositionsResponse(positions=response.json())
+        data = response.json()
+        return ListPortfolioPositionsResponse(positions=[PortfolioPosition(**p) for p in data])
 
     def get_asset_loan_availability(self, request: GetAssetLoanAvailabilityRequest) -> GetAssetLoanAvailabilityResponse:
         path = f"/portfolios/{request.portfolio}/loans/{request.asset}/availability"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetAssetLoanAvailabilityResponse(loan_availability=response.json())
+        data = response.json()
+        return GetAssetLoanAvailabilityResponse(loan_availability=LoanAvailability(**data))
 
     def get_loan_info_for_portfolio_asset(self, request: GetLoanInfoForPortfolioAssetRequest) -> GetLoanInfoForPortfolioAssetResponse:
         path = f"/portfolios/{request.portfolio}/loans/{request.asset}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetLoanInfoForPortfolioAssetResponse(portfolio_loan=response.json())
+        data = response.json()
+        return GetLoanInfoForPortfolioAssetResponse(portfolio_loan=PortfolioLoan(**data))
 
     def update_portfolio(self, request: UpdatePortfolioRequest) -> UpdatePortfolioResponse:
         path = f"/portfolios/{request.portfolio}"
         body = {"name": request.name}
         response = self.client.request("PUT", path, body=body, allowed_status_codes=request.allowed_status_codes)
-        return UpdatePortfolioResponse(portfolio=response.json())
+        data = response.json()
+        return UpdatePortfolioResponse(portfolio=Portfolio(**data))
 
     def list_open_position_limits_for_all_instruments(self, request: ListOpenPositionLimitsForAllInstrumentsRequest) -> ListOpenPositionLimitsForAllInstrumentsResponse:
         path = f"/portfolios/{request.portfolio}/position-limits/positions"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return ListOpenPositionLimitsForAllInstrumentsResponse(position_limits=response.json())
+        data = response.json()
+        return ListOpenPositionLimitsForAllInstrumentsResponse(position_limits=[OpenPositionLimit(**pl) for pl in data])
 
     def list_fills_by_portfolios(self, request: ListFillsByPortfoliosRequest) -> ListFillsByPortfoliosResponse:
         path = "/portfolios/fills"
@@ -223,19 +247,23 @@ class PortfoliosService:
         query_params = append_query_param(query_params, 'ref_datetime', request.ref_datetime)
         query_params = append_query_param(query_params, 'time_from', request.time_from)
         response = self.client.request("GET", path, query=query_params, allowed_status_codes=request.allowed_status_codes)
-        return ListFillsByPortfoliosResponse(fills_result=response.json())
+        data = response.json()
+        return ListFillsByPortfoliosResponse(fills_result=PortfolioFillsResult(**data))
 
     def list_active_loans_for_portfolio(self, request: ListActiveLoansForPortfolioRequest) -> ListActiveLoansForPortfolioResponse:
         path = f"/portfolios/{request.portfolio}/loans"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return ListActiveLoansForPortfolioResponse(loans=response.json())
+        data = response.json()
+        return ListActiveLoansForPortfolioResponse(loans=[PortfolioLoan(**l) for l in data])
 
     def get_open_position_limits_for_portfolio_instrument(self, request: GetOpenPositionLimitsForPortfolioInstrumentRequest) -> GetOpenPositionLimitsForPortfolioInstrumentResponse:
         path = f"/portfolios/{request.portfolio}/position-limits/positions/{request.instrument}"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetOpenPositionLimitsForPortfolioInstrumentResponse(open_position_limit=response.json())
+        data = response.json()
+        return GetOpenPositionLimitsForPortfolioInstrumentResponse(open_position_limit=OpenPositionLimit(**data))
 
     def get_the_total_open_position_limit_for_portfolio(self, request: GetTheTotalOpenPositionLimitForPortfolioRequest) -> GetTheTotalOpenPositionLimitForPortfolioResponse:
         path = f"/portfolios/{request.portfolio}/position-limits"
         response = self.client.request("GET", path, allowed_status_codes=request.allowed_status_codes)
-        return GetTheTotalOpenPositionLimitForPortfolioResponse(total_open_position_limit=response.json())
+        data = response.json()
+        return GetTheTotalOpenPositionLimitForPortfolioResponse(total_open_position_limit=TotalOpenPositionLimit(**data))

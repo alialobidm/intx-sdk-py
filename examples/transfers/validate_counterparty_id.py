@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--counterparty-id", required=True, help="Counterparty ID to validate")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = ValidateCounterpartyIdRequest(counterparty_id=args.counterparty_id)
 

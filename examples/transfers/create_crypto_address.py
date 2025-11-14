@@ -12,18 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import argparse
+import os
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.transfers import CreateCryptoAddressRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Create crypto address")
-    parser.add_argument("--portfolio", required=True, help="Portfolio ID")
-    parser.add_argument("--asset", required=True, help="Asset symbol")
-    parser.add_argument("--network-arn-id", required=True, help="Network ARN ID")
+    parser = argparse.ArgumentParser(
+        description="Create crypto address",
+        epilog="Example: --network-arn-id 'networks/ethereum-mainnet/assets/313ef8a9-ae5a-5f2f-8a56-572c0e2a4d5a'"
+    )
+    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser.add_argument("--asset", required=True, help="Asset symbol (e.g., ETH, USDC)")
+    parser.add_argument("--network-arn-id", required=True, help="Network ARN ID (format: networks/{network}/assets/{asset-id})")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = CreateCryptoAddressRequest(
         portfolio=args.portfolio,

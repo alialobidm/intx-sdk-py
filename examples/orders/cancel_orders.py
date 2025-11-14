@@ -25,13 +25,13 @@ def main():
     parser.add_argument("--instrument-type", help="Instrument type filter: SPOT or PERP (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = CancelOrdersRequest(
         portfolio=args.portfolio,
         instrument=args.instrument,
-        side=OrderSide[args.side] if args.side else None,
-        instrument_type=InstrumentType[args.instrument_type] if args.instrument_type else None
+        side=OrderSide[args.side].value if args.side else None,
+        instrument_type=InstrumentType[args.instrument_type].value if args.instrument_type else None
     )
 
     try:

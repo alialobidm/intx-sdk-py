@@ -13,8 +13,9 @@
 # limitations under the License.
 import os
 from typing import Optional, Any, Callable, Type
-from intx_sdk.client import Client, PRODUCTION_BASE_URL, SANDBOX_BASE_URL
+from intx_sdk.client import Client
 from intx_sdk.credentials import Credentials
+from intx_sdk.constants import PRODUCTION_BASE_URL, SANDBOX_BASE_URL
 
 
 class LazyProperty:

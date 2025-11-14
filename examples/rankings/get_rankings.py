@@ -23,11 +23,11 @@ def main():
     parser.add_argument("--period", help="Ranking period: YESTERDAY, LAST_7_DAYS, THIS_MONTH, LAST_30_DAYS, LAST_MONTH (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = GetRankingsRequest(
-        instrument_type=RankingsInstrumentType[args.instrument_type],
-        period=RankingsPeriod[args.period] if args.period else None
+        instrument_type=RankingsInstrumentType[args.instrument_type].value,
+        period=RankingsPeriod[args.period].value if args.period else None
     )
 
     try:

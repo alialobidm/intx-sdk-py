@@ -16,7 +16,7 @@ from intx_sdk.services.feerates import ListFeeRateTiersRequest
 
 
 def main():
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = ListFeeRateTiersRequest()
 

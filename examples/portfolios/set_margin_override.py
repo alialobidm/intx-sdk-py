@@ -22,7 +22,7 @@ def main():
     parser.add_argument("--margin-override", required=True, help="Margin override value")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = SetMarginOverrideRequest(
         portfolio_id=args.portfolio_id,

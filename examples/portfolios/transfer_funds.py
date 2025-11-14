@@ -24,7 +24,7 @@ def main():
     parser.add_argument("--amount", required=True, help="Amount to transfer")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = TransferFundsRequest(
         from_portfolio=args.from_portfolio,

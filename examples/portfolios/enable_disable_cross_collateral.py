@@ -12,17 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import argparse
+import os
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.portfolios import EnableDisableCrossCollateralRequest
 
 
 def main():
     parser = argparse.ArgumentParser(description="Enable or disable cross collateral")
-    parser.add_argument("--portfolio", required=True, help="Portfolio ID")
+    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
     parser.add_argument("--enabled", required=True, help="Enable status: true or false")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = EnableDisableCrossCollateralRequest(
         portfolio=args.portfolio,

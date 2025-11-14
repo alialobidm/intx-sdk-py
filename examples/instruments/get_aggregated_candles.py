@@ -25,11 +25,11 @@ def main():
     parser.add_argument("--end", help="End time (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = GetAggregatedCandlesRequest(
         instrument=args.instrument,
-        granularity=Granularity[args.granularity],
+        granularity=Granularity[args.granularity].value,
         start=args.start,
         end=args.end
     )

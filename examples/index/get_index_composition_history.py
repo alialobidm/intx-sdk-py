@@ -22,7 +22,7 @@ def main():
     parser.add_argument("--time-from", help="Start time (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = GetIndexCompositionHistoryRequest(
         index=args.index,

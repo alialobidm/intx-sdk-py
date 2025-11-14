@@ -12,17 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
+import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.portfolios import ListPortfoliosRequest
 
 
 def main():
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    parser = argparse.ArgumentParser(description="List all portfolios")
+    parser.parse_args()
+
+    client = IntxServicesClient.from_env()
     request = ListPortfoliosRequest()
-    response = client.portfolios.list_portfolios(request)
-    portfolios = [vars(portfolio) for portfolio in response.portfolios]
-    print(json.dumps(portfolios, indent=2))
+    try:
+        response = client.portfolios.list_portfolios(request)
+        print(response)
+    except Exception as e:
+        print(f"failed to list portfolios: {e}")
 
 
 if __name__ == "__main__":

@@ -25,7 +25,7 @@ def main():
     parser.add_argument("--side", required=True, help="Position side: BUY or SELL")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = TransferPositionRequest(
         from_portfolio=args.from_portfolio,

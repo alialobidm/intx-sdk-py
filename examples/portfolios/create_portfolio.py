@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--name", required=True, help="Portfolio name")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = CreatePortfolioRequest(name=args.name)
 

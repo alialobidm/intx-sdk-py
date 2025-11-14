@@ -23,7 +23,7 @@ def main():
     parser.add_argument("--show-other", help="Show other volumes (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = GetDailyTradingVolumesRequest(
         instruments=args.instruments,

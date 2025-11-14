@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import argparse
+import os
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.portfolios import PatchPortfolioRequest
 
 
 def main():
     parser = argparse.ArgumentParser(description="Patch portfolio settings")
-    parser.add_argument("--portfolio", required=True, help="Portfolio ID")
+    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
     parser.add_argument("--portfolio-name", required=True, help="Portfolio name")
     parser.add_argument("--auto-margin-enabled", help="Auto margin enabled (optional)")
     parser.add_argument("--cross-collateral-enabled", help="Cross collateral enabled (optional)")
@@ -26,7 +27,7 @@ def main():
     parser.add_argument("--pre-launch-trading-enabled", help="Pre-launch trading enabled (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = PatchPortfolioRequest(
         portfolio=args.portfolio,

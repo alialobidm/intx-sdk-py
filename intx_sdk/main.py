@@ -13,19 +13,17 @@
 #  limitations under the License.
 
 import json
-from intx_sdk.credentials import Credentials
-from intx_sdk.list_portfolios import IntxClient, ListPortfoliosRequest
+from intx_sdk import IntxServicesClient
+from intx_sdk.services.portfolios import ListPortfoliosRequest
 
 
 def main():
-    credentials = Credentials.from_env("INTX_CREDENTIALS")
-    intx_client = IntxClient(credentials, base_url="https://api-n5e1.coinbase.com/api/v1")
+    client = IntxServicesClient.from_env()
 
     request = ListPortfoliosRequest()
     try:
-        response = intx_client.list_portfolios(request)
-        pretty_response = json.dumps(response.response, indent=4)
-        print(pretty_response)
+        response = client.portfolios.list_portfolios(request)
+        print(response)
     except Exception as e:
         print(f"failed to list portfolios: {e}")
 

@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = GetInstrumentDetailsRequest(instrument=args.instrument)
 

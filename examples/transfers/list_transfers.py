@@ -26,12 +26,12 @@ def main():
     parser.add_argument("--time-to", help="Time to filter (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = ListTransfersRequest(
         portfolios=args.portfolios,
-        status=TransferStatus[args.status] if args.status else None,
-        type=TransferType[args.type] if args.type else None,
+        status=TransferStatus[args.status].value if args.status else None,
+        type=TransferType[args.type].value if args.type else None,
         time_from=args.time_from,
         time_to=args.time_to
     )

@@ -16,7 +16,7 @@ from intx_sdk.services.assets import ListAssetsRequest
 
 
 def main():
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = ListAssetsRequest()
 

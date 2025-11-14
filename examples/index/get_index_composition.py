@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--index", required=True, help="Index symbol")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = GetIndexCompositionRequest(index=args.index)
 

@@ -1,4 +1,4 @@
-# Copyright 2025-present Coinbase Global, Inc.
+# Copyright 2024-present Coinbase Global, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,7 @@
 # See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from intx_sdk.client_services import IntxServicesClient
-from intx_sdk.credentials import Credentials
-from intx_sdk.client import Client
-from intx_sdk.constants import PRODUCTION_BASE_URL, SANDBOX_BASE_URL
-
-__all__ = [
-    "IntxServicesClient",
-    "Credentials",
-    "Client",
-    "PRODUCTION_BASE_URL",
-    "SANDBOX_BASE_URL",
-]
+# API Base URLs
+PRODUCTION_BASE_URL = "https://api.international.coinbase.com/api/v1"
+SANDBOX_BASE_URL = "https://api-n5e1.coinbase.com/api/v1"
+DEFAULT_V1_API_BASE_URL = PRODUCTION_BASE_URL

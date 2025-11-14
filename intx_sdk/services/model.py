@@ -413,8 +413,8 @@ class PortfolioFeeRate:
     maker_fee_rate: str
     taker_fee_rate: str
     is_override: bool
-    trailing_30day_volume: str
-    trailing_24hr_usdc_balance: str
+    trailing_30day_volume: Optional[str] = None
+    trailing_24hr_usdc_balance: Optional[str] = None
 
 
 @dataclass

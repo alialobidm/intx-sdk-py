@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--transfer-uuid", required=True, help="Transfer UUID")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
 
     request = GetTransferRequest(transfer_uuid=args.transfer_uuid)
 

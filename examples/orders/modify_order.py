@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import argparse
+import os
+import uuid
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.orders import ModifyOpenOrderRequest
 
@@ -19,18 +21,21 @@ from intx_sdk.services.orders import ModifyOpenOrderRequest
 def main():
     parser = argparse.ArgumentParser(description="Modify an open order")
     parser.add_argument("--id", required=True, help="Order ID")
-    parser.add_argument("--client-order-id", required=True, help="Client order ID")
-    parser.add_argument("--portfolio", required=True, help="Portfolio ID")
+    parser.add_argument("--client-order-id", help="Client order ID (auto-generated if not provided)")
+    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
     parser.add_argument("--price", help="New price (optional)")
     parser.add_argument("--stop-price", help="New stop price (optional)")
     parser.add_argument("--size", help="New size (optional)")
     args = parser.parse_args()
 
-    client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+    client = IntxServicesClient.from_env()
+
+    # Generate client_order_id if not provided
+    client_order_id = args.client_order_id or str(uuid.uuid4())
 
     request = ModifyOpenOrderRequest(
         id=args.id,
-        client_order_id=args.client_order_id,
+        client_order_id=client_order_id,
         portfolio=args.portfolio,
         price=args.price,
         stop_price=args.stop_price,

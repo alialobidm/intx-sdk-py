@@ -29,24 +29,21 @@ To use the INTX Python SDK, you will need to create API credentials in the [INTX
 
 Credentials can be stored as environment variables or passed directly. The SDK supports two initialization patterns:
 
-### Using Environment Variables (Recommended)
+### Using .env.example (Recommended)
 
-Set the following environment variable with your API credentials in JSON format:
+Copy the example file to `.env` and then fill in your credentials:
 
 ```bash
-export INTX_CREDENTIALS='{
-  "accessKey": "your-access-key",
-  "passphrase": "your-passphrase",
-  "signingKey": "your-signing-key"
-}'
+cp .env.example .env
+# then edit .env and set your values
 ```
 
-Then initialize the client:
+Initialize the client:
 
 ```python
 from intx_sdk import IntxServicesClient
 
-client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+client = IntxServicesClient.from_env()
 ```
 
 ### Using Credentials Object
@@ -78,7 +75,7 @@ export INTX_ENVIRONMENT=sandbox
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.portfolios import ListPortfoliosRequest
 
-client = IntxServicesClient.from_env("INTX_CREDENTIALS")
+client = IntxServicesClient.from_env()
 
 # List portfolios
 request = ListPortfoliosRequest()
