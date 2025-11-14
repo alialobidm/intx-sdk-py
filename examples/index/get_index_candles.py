@@ -14,12 +14,13 @@
 import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.index import GetIndexCandlesRequest
+from intx_sdk.enums import Granularity
 
 
 def main():
     parser = argparse.ArgumentParser(description="Get index candles")
     parser.add_argument("--index", required=True, help="Index symbol")
-    parser.add_argument("--granularity", required=True, help="Candle granularity (e.g., 1m, 5m, 1h)")
+    parser.add_argument("--granularity", required=True, help="Candle granularity: ONE_DAY or ONE_HOUR")
     parser.add_argument("--start", required=True, help="Start time")
     parser.add_argument("--end", help="End time (optional)")
     args = parser.parse_args()
@@ -28,7 +29,7 @@ def main():
 
     request = GetIndexCandlesRequest(
         index=args.index,
-        granularity=args.granularity,
+        granularity=Granularity[args.granularity],
         start=args.start,
         end=args.end
     )

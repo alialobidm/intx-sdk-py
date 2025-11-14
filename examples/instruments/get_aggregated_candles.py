@@ -14,12 +14,13 @@
 import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.instruments import GetAggregatedCandlesRequest
+from intx_sdk.enums import Granularity
 
 
 def main():
     parser = argparse.ArgumentParser(description="Get aggregated candles for instrument")
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP)")
-    parser.add_argument("--granularity", required=True, help="Candle granularity (e.g., 1m, 5m, 1h)")
+    parser.add_argument("--granularity", required=True, help="Candle granularity: ONE_MINUTE, FIVE_MINUTE, FIFTEEN_MINUTE, THIRTY_MINUTE, ONE_HOUR, TWO_HOUR, SIX_HOUR, ONE_DAY")
     parser.add_argument("--start", required=True, help="Start time")
     parser.add_argument("--end", help="End time (optional)")
     args = parser.parse_args()
@@ -28,7 +29,7 @@ def main():
 
     request = GetAggregatedCandlesRequest(
         instrument=args.instrument,
-        granularity=args.granularity,
+        granularity=Granularity[args.granularity],
         start=args.start,
         end=args.end
     )

@@ -15,11 +15,13 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import PortfolioSummary
+from intx_sdk.enums import MarginCallStatus
 
 
 @dataclass
 class GetPortfolioSummaryRequest:
     portfolio: str
+    status: Optional[MarginCallStatus] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

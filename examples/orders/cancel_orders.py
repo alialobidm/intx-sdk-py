@@ -14,6 +14,7 @@
 import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.orders import CancelOrdersRequest
+from intx_sdk.enums import OrderSide, InstrumentType
 
 
 def main():
@@ -21,7 +22,7 @@ def main():
     parser.add_argument("--portfolio", required=True, help="Portfolio ID")
     parser.add_argument("--instrument", help="Instrument filter (optional)")
     parser.add_argument("--side", help="Side filter: BUY or SELL (optional)")
-    parser.add_argument("--instrument-type", help="Instrument type filter (optional)")
+    parser.add_argument("--instrument-type", help="Instrument type filter: SPOT or PERP (optional)")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env("INTX_CREDENTIALS")
@@ -29,8 +30,8 @@ def main():
     request = CancelOrdersRequest(
         portfolio=args.portfolio,
         instrument=args.instrument,
-        side=args.side,
-        instrument_type=args.instrument_type
+        side=OrderSide[args.side] if args.side else None,
+        instrument_type=InstrumentType[args.instrument_type] if args.instrument_type else None
     )
 
     try:

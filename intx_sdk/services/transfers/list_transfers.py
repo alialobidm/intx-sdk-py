@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.utils import PaginationParams
 from intx_sdk.services.model import TransfersResult
+from intx_sdk.enums import TransferType, TransferStatus
 
 
 @dataclass
@@ -24,8 +25,8 @@ class ListTransfersRequest:
     time_from: Optional[str] = None
     time_to: Optional[str] = None
     pagination: Optional[PaginationParams] = None
-    status: Optional[str] = None
-    type: Optional[str] = None
+    status: Optional[TransferStatus] = None
+    type: Optional[TransferType] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

@@ -14,6 +14,7 @@
 import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.portfolios import AcquireOrRepayLoanRequest
+from intx_sdk.enums import LoanAction
 
 
 def main():
@@ -29,7 +30,7 @@ def main():
     request = AcquireOrRepayLoanRequest(
         portfolio=args.portfolio,
         asset=args.asset,
-        action=args.action,
+        action=LoanAction[args.action],
         amount=args.amount
     )
 

@@ -14,19 +14,20 @@
 import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.rankings import GetRankingsRequest
+from intx_sdk.enums import RankingsInstrumentType, RankingsPeriod
 
 
 def main():
     parser = argparse.ArgumentParser(description="Get leaderboard rankings")
-    parser.add_argument("--instrument-type", required=True, help="Instrument type")
-    parser.add_argument("--period", help="Ranking period (optional)")
+    parser.add_argument("--instrument-type", required=True, help="Instrument type: SPOT or PERPETUAL_FUTURE")
+    parser.add_argument("--period", help="Ranking period: YESTERDAY, LAST_7_DAYS, THIS_MONTH, LAST_30_DAYS, LAST_MONTH (optional)")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env("INTX_CREDENTIALS")
 
     request = GetRankingsRequest(
-        instrument_type=args.instrument_type,
-        period=args.period
+        instrument_type=RankingsInstrumentType[args.instrument_type],
+        period=RankingsPeriod[args.period] if args.period else None
     )
 
     try:

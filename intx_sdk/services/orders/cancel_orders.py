@@ -15,14 +15,15 @@
 from dataclasses import dataclass
 from typing import Optional, List
 from intx_sdk.services.model import Order
+from intx_sdk.enums import OrderSide, InstrumentType
 
 
 @dataclass
 class CancelOrdersRequest:
     portfolio: str
     instrument: Optional[str] = None
-    side: Optional[str] = None
-    instrument_type: Optional[str] = None
+    side: Optional[OrderSide] = None
+    instrument_type: Optional[InstrumentType] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

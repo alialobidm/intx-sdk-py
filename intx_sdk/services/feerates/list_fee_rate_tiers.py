@@ -15,10 +15,13 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import FeeTier
+from intx_sdk.enums import FeeTierType, InstrumentType
 
 
 @dataclass
 class ListFeeRateTiersRequest:
+    fee_tier_type: Optional[FeeTierType] = None
+    instrument_type: Optional[InstrumentType] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

@@ -15,11 +15,15 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import InstrumentDetails
+from intx_sdk.enums import InstrumentType, InstrumentMode, TradingState
 
 
 @dataclass
 class GetInstrumentDetailsRequest:
     instrument: str
+    type: Optional[InstrumentType] = None
+    mode: Optional[InstrumentMode] = None
+    trading_state: Optional[TradingState] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

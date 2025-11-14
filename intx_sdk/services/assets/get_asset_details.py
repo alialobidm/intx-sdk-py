@@ -15,11 +15,13 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import Asset
+from intx_sdk.enums import AssetStatus
 
 
 @dataclass
 class GetAssetDetailsRequest:
     asset: str
+    status: Optional[AssetStatus] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

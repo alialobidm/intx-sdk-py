@@ -15,11 +15,14 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import Transfer
+from intx_sdk.enums import TransferType, TransferStatus
 
 
 @dataclass
 class GetTransferRequest:
     transfer_uuid: str
+    transfer_type: Optional[TransferType] = None
+    status: Optional[TransferStatus] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

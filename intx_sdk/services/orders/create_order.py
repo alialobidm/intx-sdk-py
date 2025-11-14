@@ -15,25 +15,27 @@
 from dataclasses import dataclass
 from typing import Optional, List
 from intx_sdk.services.model import Order
+from intx_sdk.enums import OrderSide, OrderType, TimeInForce, StpMode, AlgoStrategy
 
 
 @dataclass
 class CreateOrderRequest:
     client_order_id: str
-    side: str
+    side: OrderSide
     size: str
-    tif: str
+    tif: TimeInForce
     instrument: str
-    type: str
+    type: OrderType
     price: Optional[str] = None
     stop_price: Optional[str] = None
     stop_limit_price: Optional[str] = None
     expire_time: Optional[str] = None
     portfolio: Optional[str] = None
     user: Optional[str] = None
-    stp_mode: Optional[str] = None
+    stp_mode: Optional[StpMode] = None
     post_only: Optional[str] = None
     close_only: Optional[str] = None
+    algo_strategy: Optional[AlgoStrategy] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

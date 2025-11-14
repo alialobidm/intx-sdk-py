@@ -14,29 +14,32 @@
 import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.orders import CreateOrderRequest
+from intx_sdk.enums import OrderSide, OrderType, TimeInForce
 
 
 def main():
     parser = argparse.ArgumentParser(description="Create a new order")
+    parser.add_argument("--client-order-id", required=True, help="Client order ID")
     parser.add_argument("--portfolio", required=True, help="Portfolio ID")
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP, ETH-PERP)")
     parser.add_argument("--side", required=True, help="Order side (BUY or SELL)")
-    parser.add_argument("--quantity", required=True, help="Order quantity")
+    parser.add_argument("--size", required=True, help="Order size")
+    parser.add_argument("--type", required=True, help="Order type (LIMIT, MARKET, STOP_LIMIT, STOP, TAKE_PROFIT_STOP_LOSS)")
+    parser.add_argument("--tif", required=True, help="Time in force (GTC, IOC, GTT, FOK)")
     parser.add_argument("--price", help="Limit price (optional)")
-    parser.add_argument("--client-order-id", help="Client order ID (optional)")
-    parser.add_argument("--time-in-force", help="Time in force (optional)")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env("INTX_CREDENTIALS")
 
     request = CreateOrderRequest(
+        client_order_id=args.client_order_id,
         portfolio=args.portfolio,
         instrument=args.instrument,
-        side=args.side,
-        quantity=args.quantity,
-        price=args.price,
-        client_order_id=args.client_order_id,
-        time_in_force=args.time_in_force
+        side=OrderSide[args.side],
+        size=args.size,
+        type=OrderType[args.type],
+        tif=TimeInForce[args.tif],
+        price=args.price
     )
 
     try:

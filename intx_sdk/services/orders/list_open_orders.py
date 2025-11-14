@@ -16,17 +16,18 @@ from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.utils import PaginationParams
 from intx_sdk.services.model import Order
+from intx_sdk.enums import InstrumentType, EventType, OrderType, OrderSide
 
 
 @dataclass
 class ListOpenOrdersRequest:
     portfolio: Optional[str] = None
     instrument: Optional[str] = None
-    instrument_type: Optional[str] = None
+    instrument_type: Optional[InstrumentType] = None
     client_order_id: Optional[str] = None
-    event_type: Optional[str] = None
-    order_type: Optional[str] = None
-    side: Optional[str] = None
+    event_type: Optional[EventType] = None
+    order_type: Optional[OrderType] = None
+    side: Optional[OrderSide] = None
     ref_datetime: Optional[str] = None
     pagination: Optional[PaginationParams] = None
     allowed_status_codes: Optional[List[int]] = None

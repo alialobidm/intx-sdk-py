@@ -14,13 +14,14 @@
 import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.transfers import ListTransfersRequest
+from intx_sdk.enums import TransferType, TransferStatus
 
 
 def main():
     parser = argparse.ArgumentParser(description="List transfers")
     parser.add_argument("--portfolios", help="Portfolio IDs filter (optional)")
-    parser.add_argument("--status", help="Status filter (optional)")
-    parser.add_argument("--type", help="Type filter (optional)")
+    parser.add_argument("--status", help="Status filter: PROCESSED, NEW, FAILED, STARTED (optional)")
+    parser.add_argument("--type", help="Type filter: DEPOSIT, WITHDRAW, INTERNAL, etc. (optional)")
     parser.add_argument("--time-from", help="Time from filter (optional)")
     parser.add_argument("--time-to", help="Time to filter (optional)")
     args = parser.parse_args()
@@ -29,8 +30,8 @@ def main():
 
     request = ListTransfersRequest(
         portfolios=args.portfolios,
-        status=args.status,
-        type=args.type,
+        status=TransferStatus[args.status] if args.status else None,
+        type=TransferType[args.type] if args.type else None,
         time_from=args.time_from,
         time_to=args.time_to
     )

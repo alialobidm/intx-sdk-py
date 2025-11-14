@@ -15,13 +15,14 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import LoanPreview
+from intx_sdk.enums import LoanAction
 
 
 @dataclass
 class PreviewLoanUpdateRequest:
     portfolio: str
     asset: str
-    action: str
+    action: LoanAction
     amount: str
     allowed_status_codes: Optional[List[int]] = None
 

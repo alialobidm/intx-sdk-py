@@ -15,10 +15,12 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import AddressBookEntry
+from intx_sdk.enums import RecipientType
 
 
 @dataclass
 class GetAddressBookRequest:
+    recipient_type: Optional[RecipientType] = None
     allowed_status_codes: Optional[List[int]] = None
 
 

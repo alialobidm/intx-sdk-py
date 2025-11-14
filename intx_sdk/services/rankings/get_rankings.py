@@ -15,12 +15,13 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import Rankings
+from intx_sdk.enums import RankingsInstrumentType, RankingsPeriod
 
 
 @dataclass
 class GetRankingsRequest:
-    instrument_type: str
-    period: Optional[str] = None
+    instrument_type: RankingsInstrumentType
+    period: Optional[RankingsPeriod] = None
     instruments: Optional[List[str]] = None
     allowed_status_codes: Optional[List[int]] = None
 

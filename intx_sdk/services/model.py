@@ -14,6 +14,7 @@
 
 from dataclasses import dataclass
 from typing import Optional
+from intx_sdk.enums import OrderSide, OrderType, TimeInForce, EventType, OrderStatus, StpMode, AlgoStrategy, TransferType, TransferStatus
 
 
 @dataclass
@@ -268,19 +269,19 @@ class InstrumentDetails:
 class Order:
     order_id: int
     client_order_id: str
-    side: str
+    side: OrderSide
     instrument_id: int
     instrument_uuid: str
     symbol: str
     portfolio_id: int
     portfolio_uuid: str
-    type: str
+    type: OrderType
     size: float
-    tif: str
-    event_type: str
+    tif: TimeInForce
+    event_type: EventType
     event_time: str
     submit_time: str
-    order_status: str
+    order_status: OrderStatus
     leaves_qty: str
     exec_qty: str
     avg_price: str
@@ -291,8 +292,8 @@ class Order:
     stop_price: Optional[float] = None
     stop_limit_price: Optional[float] = None
     expire_time: Optional[str] = None
-    stp_mode: Optional[str] = None
-    algo_strategy: Optional[str] = None
+    stp_mode: Optional[StpMode] = None
+    algo_strategy: Optional[AlgoStrategy] = None
     text: Optional[str] = None
 
 
@@ -528,10 +529,10 @@ class PortfolioInfo:
 @dataclass
 class Transfer:
     transfer_uuid: str
-    transfer_type: str
+    transfer_type: TransferType
     amount: str
     asset: str
-    status: str
+    status: TransferStatus
     network_name: str
     created_at: str
     updated_at: str

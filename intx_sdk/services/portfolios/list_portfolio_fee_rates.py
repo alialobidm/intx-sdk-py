@@ -15,10 +15,12 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from intx_sdk.services.model import PortfolioFeeRate
+from intx_sdk.enums import InstrumentType
 
 
 @dataclass
 class ListPortfolioFeeRatesRequest:
+    instrument_type: Optional[InstrumentType] = None
     allowed_status_codes: Optional[List[int]] = None
 
 
