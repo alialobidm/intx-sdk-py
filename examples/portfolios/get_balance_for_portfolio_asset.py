@@ -18,15 +18,21 @@ from intx_sdk.services.portfolios import GetBalanceForPortfolioAssetRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get balance for portfolio asset")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Get balance for portfolio asset",
+        epilog="""
+Examples:
+  # Get USDC balance
+  python examples/portfolios/get_balance_for_portfolio_asset.py --asset USDC
+"""
+    )
     parser.add_argument("--asset", required=True, help="Asset symbol (e.g., USDC, BTC)")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = GetBalanceForPortfolioAssetRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         asset=args.asset
     )
 

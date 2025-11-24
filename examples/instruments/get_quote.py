@@ -17,7 +17,14 @@ from intx_sdk.services.instruments import GetQuotePerInstrumentRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get quote for instrument")
+    parser = argparse.ArgumentParser(
+        description="Get quote for instrument",
+        epilog="""
+Examples:
+  # Get current BTC-PERP quote
+  python examples/instruments/get_quote.py --instrument BTC-PERP
+"""
+    )
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP)")
     args = parser.parse_args()
 

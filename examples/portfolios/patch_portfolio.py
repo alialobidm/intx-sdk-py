@@ -18,8 +18,14 @@ from intx_sdk.services.portfolios import PatchPortfolioRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Patch portfolio settings")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Patch portfolio settings",
+        epilog="""
+Examples:
+  # Update portfolio name and enable auto margin
+  python examples/portfolios/patch_portfolio.py --portfolio-name "Updated Portfolio" --auto-margin-enabled true
+"""
+    )
     parser.add_argument("--portfolio-name", required=True, help="Portfolio name")
     parser.add_argument("--auto-margin-enabled", help="Auto margin enabled (optional)")
     parser.add_argument("--cross-collateral-enabled", help="Cross collateral enabled (optional)")
@@ -30,7 +36,7 @@ def main():
     client = IntxServicesClient.from_env()
 
     request = PatchPortfolioRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         portfolio_name=args.portfolio_name,
         auto_margin_enabled=args.auto_margin_enabled,
         cross_collateral_enabled=args.cross_collateral_enabled,

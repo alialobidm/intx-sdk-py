@@ -18,15 +18,21 @@ from intx_sdk.services.orders import GetOrderDetailsRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get order details")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Get order details",
+        epilog="""
+Examples:
+  # Get order details
+  python examples/orders/get_order_details.py --order-id 3jhx19me-1-0
+"""
+    )
     parser.add_argument("--order-id", required=True, help="Order ID")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = GetOrderDetailsRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         order_id=args.order_id
     )
 

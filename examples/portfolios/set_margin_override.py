@@ -12,20 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import argparse
+import os
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.portfolios import SetMarginOverrideRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Set margin override")
-    parser.add_argument("--portfolio-id", required=True, help="Portfolio ID")
+    parser = argparse.ArgumentParser(
+        description="Set margin override",
+        epilog="""
+Examples:
+  # Set margin override
+  python examples/portfolios/set_margin_override.py --margin-override 1.5
+"""
+    )
     parser.add_argument("--margin-override", required=True, help="Margin override value")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = SetMarginOverrideRequest(
-        portfolio_id=args.portfolio_id,
+        portfolio_id=os.getenv('INTX_PORTFOLIO_ID'),
         margin_override=args.margin_override
     )
 

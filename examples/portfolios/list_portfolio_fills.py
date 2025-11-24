@@ -18,8 +18,14 @@ from intx_sdk.services.portfolios import ListPortfolioFillsRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List portfolio fills")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="List portfolio fills",
+        epilog="""
+Examples:
+  # List all fills
+  python examples/portfolios/list_portfolio_fills.py
+"""
+    )
     parser.add_argument("--order-id", help="Filter by order ID (optional)")
     parser.add_argument("--client-order-id", help="Filter by client order ID (optional)")
     args = parser.parse_args()
@@ -27,7 +33,7 @@ def main():
     client = IntxServicesClient.from_env()
 
     request = ListPortfolioFillsRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         order_id=args.order_id,
         client_order_id=args.client_order_id
     )

@@ -17,7 +17,14 @@ from intx_sdk.services.portfolios import CreatePortfolioRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Create a new portfolio")
+    parser = argparse.ArgumentParser(
+        description="Create a new portfolio",
+        epilog="""
+Examples:
+  # Create a new portfolio
+  python examples/portfolios/create_portfolio.py --name "Trading Portfolio"
+"""
+    )
     parser.add_argument("--name", required=True, help="Portfolio name")
     args = parser.parse_args()
 

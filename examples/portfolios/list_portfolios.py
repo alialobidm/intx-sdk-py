@@ -18,7 +18,14 @@ from intx_sdk.services.portfolios import ListPortfoliosRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List all portfolios")
+    parser = argparse.ArgumentParser(
+        description="List all portfolios",
+        epilog="""
+Examples:
+  # List all portfolios
+  python examples/portfolios/list_portfolios.py
+"""
+    )
     parser.parse_args()
 
     client = IntxServicesClient.from_env()

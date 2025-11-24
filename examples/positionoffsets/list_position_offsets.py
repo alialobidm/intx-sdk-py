@@ -11,11 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.positionoffsets import ListPositionOffsetsRequest
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="List position offsets",
+        epilog="""
+Examples:
+  # List all position offsets
+  python examples/positionoffsets/list_position_offsets.py
+"""
+    )
+    parser.parse_args()
+
     client = IntxServicesClient.from_env()
 
     request = ListPositionOffsetsRequest()

@@ -17,7 +17,14 @@ from intx_sdk.services.instruments import GetHistoricalFundingRatesRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get historical funding rates")
+    parser = argparse.ArgumentParser(
+        description="Get historical funding rates",
+        epilog="""
+Examples:
+  # Get historical funding rates for BTC-PERP
+  python examples/instruments/get_historical_funding_rates.py --instrument BTC-PERP
+"""
+    )
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP)")
     args = parser.parse_args()
 

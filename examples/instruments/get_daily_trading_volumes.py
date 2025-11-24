@@ -17,7 +17,14 @@ from intx_sdk.services.instruments import GetDailyTradingVolumesRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get daily trading volumes")
+    parser = argparse.ArgumentParser(
+        description="Get daily trading volumes",
+        epilog="""
+Examples:
+  # Get volumes for single instrument
+  python examples/instruments/get_daily_trading_volumes.py --instruments BTC-PERP
+"""
+    )
     parser.add_argument("--instruments", required=True, help="Comma-separated instrument symbols")
     parser.add_argument("--time-from", help="Start time filter (optional)")
     parser.add_argument("--show-other", help="Show other volumes (optional)")

@@ -18,15 +18,21 @@ from intx_sdk.services.portfolios import GetOpenPositionLimitsForPortfolioInstru
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get open position limits for portfolio instrument")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Get open position limits for portfolio instrument",
+        epilog="""
+Examples:
+  # Get BTC-PERP limits
+  python examples/portfolios/get_open_position_limits_for_portfolio_instrument.py --instrument BTC-PERP
+"""
+    )
     parser.add_argument("--instrument", required=True, help="Instrument symbol")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = GetOpenPositionLimitsForPortfolioInstrumentRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         instrument=args.instrument
     )
 

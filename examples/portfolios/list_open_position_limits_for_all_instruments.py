@@ -18,13 +18,19 @@ from intx_sdk.services.portfolios import ListOpenPositionLimitsForAllInstruments
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List open position limits for all instruments")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(
+        description="List open position limits for all instruments",
+        epilog="""
+Examples:
+  # List limits for all instruments
+  python examples/portfolios/list_open_position_limits_for_all_instruments.py
+"""
+    )
+    parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
-    request = ListOpenPositionLimitsForAllInstrumentsRequest(portfolio=args.portfolio)
+    request = ListOpenPositionLimitsForAllInstrumentsRequest(portfolio=os.getenv('INTX_PORTFOLIO_ID'))
 
     try:
         response = client.portfolios.list_open_position_limits_for_all_instruments(request)

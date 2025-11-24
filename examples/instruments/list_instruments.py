@@ -11,11 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.instruments import ListInstrumentsRequest
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="List all instruments",
+        epilog="""
+Examples:
+  # List all available instruments
+  python examples/instruments/list_instruments.py
+"""
+    )
+    parser.parse_args()
+
     client = IntxServicesClient.from_env()
 
     request = ListInstrumentsRequest()

@@ -15,7 +15,7 @@
 from dataclasses import dataclass
 from typing import List, Optional, Any
 from intx_sdk.utils import PaginationParams
-from intx_sdk.services.model import FundingRate
+from intx_sdk.services.model import FundingRate, Pagination
 
 
 @dataclass
@@ -27,4 +27,5 @@ class GetHistoricalFundingRatesRequest:
 
 @dataclass
 class GetHistoricalFundingRatesResponse:
-    funding_rates: List[FundingRate] = None
+    pagination: Pagination = None
+    results: List[FundingRate] = None

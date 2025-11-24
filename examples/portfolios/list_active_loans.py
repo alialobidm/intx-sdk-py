@@ -18,13 +18,19 @@ from intx_sdk.services.portfolios import ListActiveLoansForPortfolioRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List active loans for portfolio")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(
+        description="List active loans for portfolio",
+        epilog="""
+Examples:
+  # List active loans
+  python examples/portfolios/list_active_loans.py
+"""
+    )
+    parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
-    request = ListActiveLoansForPortfolioRequest(portfolio=args.portfolio)
+    request = ListActiveLoansForPortfolioRequest(portfolio=os.getenv('INTX_PORTFOLIO_ID'))
 
     try:
         response = client.portfolios.list_active_loans_for_portfolio(request)

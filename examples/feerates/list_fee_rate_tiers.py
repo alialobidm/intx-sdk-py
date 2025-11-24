@@ -11,11 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.feerates import ListFeeRateTiersRequest
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="List fee rate tiers",
+        epilog="""
+Examples:
+  # List all fee rate tiers
+  python examples/feerates/list_fee_rate_tiers.py
+"""
+    )
+    parser.parse_args()
+
     client = IntxServicesClient.from_env()
 
     request = ListFeeRateTiersRequest()

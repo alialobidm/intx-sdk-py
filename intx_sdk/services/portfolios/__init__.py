@@ -19,6 +19,7 @@ from .create_portfolio import CreatePortfolioRequest, CreatePortfolioResponse
 from .enable_disable_auto_margin import EnableDisableAutoMarginRequest, EnableDisableAutoMarginResponse
 from .enable_disable_cross_collateral import EnableDisableCrossCollateralRequest, EnableDisableCrossCollateralResponse
 from .get_balance_for_portfolio_asset import GetBalanceForPortfolioAssetRequest, GetBalanceForPortfolioAssetResponse
+from .get_fund_transfer_limit import GetFundTransferLimitRequest, GetFundTransferLimitResponse
 from .get_portfolio import GetPortfolioRequest, GetPortfolioResponse
 from .get_portfolio_details import GetPortfolioDetailsRequest, GetPortfolioDetailsResponse
 from .get_portfolio_summary import GetPortfolioSummaryRequest, GetPortfolioSummaryResponse
@@ -55,6 +56,8 @@ __all__ = [
     "EnableDisableCrossCollateralResponse",
     "GetBalanceForPortfolioAssetRequest",
     "GetBalanceForPortfolioAssetResponse",
+    "GetFundTransferLimitRequest",
+    "GetFundTransferLimitResponse",
     "GetPortfolioRequest",
     "GetPortfolioResponse",
     "GetPortfolioDetailsRequest",

@@ -18,7 +18,14 @@ from intx_sdk.enums import RankingsInstrumentType, RankingsPeriod
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get leaderboard rankings")
+    parser = argparse.ArgumentParser(
+        description="Get leaderboard rankings",
+        epilog="""
+Examples:
+  # Get perpetual futures rankings
+  python examples/rankings/get_rankings.py --instrument-type PERPETUAL_FUTURE
+"""
+    )
     parser.add_argument("--instrument-type", required=True, help="Instrument type: SPOT or PERPETUAL_FUTURE")
     parser.add_argument("--period", help="Ranking period: YESTERDAY, LAST_7_DAYS, THIS_MONTH, LAST_30_DAYS, LAST_MONTH (optional)")
     args = parser.parse_args()

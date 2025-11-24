@@ -18,7 +18,14 @@ from intx_sdk.enums import TransferType, TransferStatus
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List transfers")
+    parser = argparse.ArgumentParser(
+        description="List transfers",
+        epilog="""
+Examples:
+  # List all transfers
+  python examples/transfers/list_transfers.py
+"""
+    )
     parser.add_argument("--portfolios", help="Portfolio IDs filter (optional)")
     parser.add_argument("--status", help="Status filter: PROCESSED, NEW, FAILED, STARTED (optional)")
     parser.add_argument("--type", help="Type filter: DEPOSIT, WITHDRAW, INTERNAL, etc. (optional)")

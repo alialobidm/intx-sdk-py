@@ -17,7 +17,14 @@ from intx_sdk.services.portfolios import TransferFundsRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Transfer funds between portfolios")
+    parser = argparse.ArgumentParser(
+        description="Transfer funds between portfolios",
+        epilog="""
+Examples:
+  # Transfer USDC between portfolios
+  python examples/portfolios/transfer_funds.py --from-portfolio 1w98n1ex-1-0 --to-portfolio 2x09m2fy-2-1 --asset USDC --amount 1000
+"""
+    )
     parser.add_argument("--from-portfolio", required=True, help="Source portfolio ID")
     parser.add_argument("--to-portfolio", required=True, help="Destination portfolio ID")
     parser.add_argument("--asset", required=True, help="Asset symbol (e.g., USDC, BTC)")

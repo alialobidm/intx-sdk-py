@@ -17,7 +17,14 @@ from intx_sdk.services.index import GetIndexPriceRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get index price")
+    parser = argparse.ArgumentParser(
+        description="Get index price",
+        epilog="""
+Examples:
+  # Get COIN50 index price
+  python examples/index/get_index_price.py --index COIN50
+"""
+    )
     parser.add_argument("--index", required=True, help="Index symbol")
     args = parser.parse_args()
 

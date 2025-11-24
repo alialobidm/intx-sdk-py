@@ -67,8 +67,8 @@ class AssetBalance:
     loan_initial_margin_contribution: float
     collateral_backed_overdraft_loan: float
     user_requested_loan: float
-    unreconciled_amount: float
-    max_undelegate_amount: float
+    unreconciled_amount: Optional[float] = None
+    max_undelegate_amount: Optional[float] = None
 
 
 @dataclass
@@ -268,6 +268,7 @@ class InstrumentDetails:
 @dataclass
 class Order:
     order_id: int
+    order_uuid: str
     client_order_id: str
     side: OrderSide
     instrument_id: int
@@ -278,9 +279,6 @@ class Order:
     type: OrderType
     size: float
     tif: TimeInForce
-    event_type: EventType
-    event_time: str
-    submit_time: str
     order_status: OrderStatus
     leaves_qty: str
     exec_qty: str
@@ -288,6 +286,10 @@ class Order:
     fee: str
     post_only: bool
     close_only: bool
+    reduce_only: bool
+    event_type: Optional[EventType] = None
+    event_time: Optional[str] = None
+    submit_time: Optional[str] = None
     price: Optional[float] = None
     stop_price: Optional[float] = None
     stop_limit_price: Optional[float] = None
@@ -344,14 +346,16 @@ class PortfolioSummary:
     portfolio_maintenance_margin: float
     portfolio_close_out_margin: float
     in_liquidation: bool
-    unrealized_pnl_notional: float
-    portfolio_initial_margin_notional: float
-    portfolio_maintenance_margin_notional: float
-    portfolio_close_out_margin_notional: float
-    margin_override: float
-    lock_up_initial_margin: float
-    loan_collateral_requirement: str
-    position_offset_notional: float
+    unrealized_pnl_notional: Optional[float] = None
+    portfolio_initial_margin_notional: Optional[float] = None
+    portfolio_current_margin_notional: Optional[float] = None
+    portfolio_maintenance_margin_notional: Optional[float] = None
+    portfolio_close_out_margin_notional: Optional[float] = None
+    margin_override: Optional[float] = None
+    lock_up_initial_margin: Optional[float] = None
+    loan_collateral_requirement: Optional[str] = None
+    position_offset_notional: Optional[float] = None
+    total_allocated_initial_margin_notional: Optional[float] = None
 
 
 @dataclass
@@ -384,6 +388,7 @@ class PortfolioDetail:
 @dataclass
 class PortfolioPosition:
     id: str
+    uuid: str
     symbol: str
     instrument_id: str
     instrument_uuid: str
@@ -396,6 +401,11 @@ class PortfolioPosition:
     mark_price: str
     entry_vwap: str
     index_price: str
+    initial_margin: Optional[float] = None
+    open_position_notional: Optional[str] = None
+    long_open_position_notional: Optional[str] = None
+    short_open_position_notional: Optional[str] = None
+    position_margin_override: Optional[str] = None
 
 
 @dataclass
@@ -461,17 +471,18 @@ class MarginOverrideResult:
 
 @dataclass
 class LoanPreview:
-    initial_margin_contribution: str
-    initial_margin_delta: str
-    portfolio_initial_margin: str
-    portfolio_initial_margin_notional: str
-    loan_collateral_requirement: str
-    loan_collateral_requirement_delta: str
-    total_loan: str
-    loan_delta: str
-    max_available: str
-    reject_details: str
-    is_valid: bool
+    reject_details: Optional[str] = None
+    is_valid: Optional[bool] = None
+    initial_margin_contribution: Optional[str] = None
+    initial_margin_delta: Optional[str] = None
+    portfolio_initial_margin: Optional[str] = None
+    portfolio_initial_margin_notional: Optional[str] = None
+    loan_collateral_requirement: Optional[str] = None
+    loan_collateral_requirement_delta: Optional[str] = None
+    total_loan: Optional[str] = None
+    loan_delta: Optional[str] = None
+    max_available: Optional[str] = None
+
 
 
 @dataclass

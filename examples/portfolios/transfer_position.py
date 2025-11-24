@@ -17,7 +17,14 @@ from intx_sdk.services.portfolios import TransferPositionRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Transfer position between portfolios")
+    parser = argparse.ArgumentParser(
+        description="Transfer position between portfolios",
+        epilog="""
+Examples:
+  # Transfer BTC-PERP long position
+  python examples/portfolios/transfer_position.py --from-portfolio 1w98n1ex-1-0 --to-portfolio 2x09m2fy-2-1 --instrument BTC-PERP --quantity 0.5 --side BUY
+"""
+    )
     parser.add_argument("--from-portfolio", required=True, help="Source portfolio ID")
     parser.add_argument("--to-portfolio", required=True, help="Destination portfolio ID")
     parser.add_argument("--instrument", required=True, help="Instrument symbol")

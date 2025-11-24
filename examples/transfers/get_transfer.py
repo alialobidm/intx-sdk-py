@@ -17,7 +17,14 @@ from intx_sdk.services.transfers import GetTransferRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get transfer details")
+    parser = argparse.ArgumentParser(
+        description="Get transfer details",
+        epilog="""
+Examples:
+  # Get transfer details
+  python examples/transfers/get_transfer.py --transfer-uuid 3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c
+"""
+    )
     parser.add_argument("--transfer-uuid", required=True, help="Transfer UUID")
     args = parser.parse_args()
 

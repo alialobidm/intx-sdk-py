@@ -17,7 +17,14 @@ from intx_sdk.services.portfolios import ListFillsByPortfoliosRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List fills by portfolios")
+    parser = argparse.ArgumentParser(
+        description="List fills by portfolios",
+        epilog="""
+Examples:
+  # List all fills across portfolios
+  python examples/portfolios/list_fills_by_portfolios.py
+"""
+    )
     parser.add_argument("--portfolio-id", help="Portfolio ID filter (optional)")
     parser.add_argument("--portfolios", help="Comma-separated portfolio IDs (optional)")
     parser.add_argument("--order-id", help="Order ID filter (optional)")

@@ -18,13 +18,19 @@ from intx_sdk.services.transfers import CreateCounterpartyIdRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Create counterparty ID")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Create counterparty ID",
+        epilog="""
+Examples:
+  # Create counterparty ID
+  python examples/transfers/create_counterparty_id.py
+"""
+    )
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
-    request = CreateCounterpartyIdRequest(portfolio=args.portfolio)
+    request = CreateCounterpartyIdRequest(portfolio=os.getenv('INTX_PORTFOLIO_ID'))
 
     try:
         response = client.transfers.create_counterparty_id(request)

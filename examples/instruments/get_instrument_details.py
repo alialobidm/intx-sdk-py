@@ -17,7 +17,14 @@ from intx_sdk.services.instruments import GetInstrumentDetailsRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get instrument details")
+    parser = argparse.ArgumentParser(
+        description="Get instrument details",
+        epilog="""
+Examples:
+  # Get BTC-PERP details
+  python examples/instruments/get_instrument_details.py --instrument BTC-PERP
+"""
+    )
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP)")
     args = parser.parse_args()
 

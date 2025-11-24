@@ -18,7 +18,14 @@ from intx_sdk.enums import Granularity
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get aggregated candles for instrument")
+    parser = argparse.ArgumentParser(
+        description="Get aggregated candles for instrument",
+        epilog="""
+Examples:
+  # Get 1-hour candles for BTC-PERP
+  python examples/instruments/get_aggregated_candles.py --instrument BTC-PERP --granularity ONE_HOUR --start 2024-01-01T00:00:00Z
+"""
+    )
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP)")
     parser.add_argument("--granularity", required=True, help="Candle granularity: ONE_MINUTE, FIVE_MINUTE, FIFTEEN_MINUTE, THIRTY_MINUTE, ONE_HOUR, TWO_HOUR, SIX_HOUR, ONE_DAY")
     parser.add_argument("--start", required=True, help="Start time")

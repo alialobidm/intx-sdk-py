@@ -18,13 +18,19 @@ from intx_sdk.services.portfolios import GetTheTotalOpenPositionLimitForPortfoli
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get total open position limit for portfolio")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(
+        description="Get total open position limit for portfolio",
+        epilog="""
+Examples:
+  # Get total open position limit
+  python examples/portfolios/get_total_open_position_limit.py
+"""
+    )
+    parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
-    request = GetTheTotalOpenPositionLimitForPortfolioRequest(portfolio=args.portfolio)
+    request = GetTheTotalOpenPositionLimitForPortfolioRequest(portfolio=os.getenv('INTX_PORTFOLIO_ID'))
 
     try:
         response = client.portfolios.get_the_total_open_position_limit_for_portfolio(request)

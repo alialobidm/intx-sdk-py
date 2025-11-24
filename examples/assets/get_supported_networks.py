@@ -17,7 +17,14 @@ from intx_sdk.services.assets import GetSupportedNetworksRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get supported networks for asset")
+    parser = argparse.ArgumentParser(
+        description="Get supported networks for asset",
+        epilog="""
+Examples:
+  # Get supported networks for USDC
+  python examples/assets/get_supported_networks.py --asset USDC
+"""
+    )
     parser.add_argument("--asset", required=True, help="Asset symbol (e.g., BTC, USDC)")
     args = parser.parse_args()
 

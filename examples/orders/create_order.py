@@ -20,9 +20,18 @@ from intx_sdk.enums import OrderSide, OrderType, TimeInForce
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Create a new order")
+    parser = argparse.ArgumentParser(
+        description="Create a new order",
+        epilog="""
+Examples:
+  # Create a limit buy order
+  python examples/orders/create_order.py --instrument BTC-PERP --side BUY --size 0.1 --type LIMIT --price 50000
+
+  # Create a market sell order
+  python examples/orders/create_order.py --instrument ETH-PERP --side SELL --size 1.5 --type MARKET
+"""
+    )
     parser.add_argument("--client-order-id", help="Client order ID (auto-generated if not provided)")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP, ETH-PERP)")
     parser.add_argument("--side", required=True, help="Order side (BUY or SELL)")
     parser.add_argument("--size", required=True, help="Order size")
@@ -43,7 +52,7 @@ def main():
 
     request = CreateOrderRequest(
         client_order_id=client_order_id,
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         instrument=args.instrument,
         side=OrderSide[args.side.upper()].value,
         size=args.size,

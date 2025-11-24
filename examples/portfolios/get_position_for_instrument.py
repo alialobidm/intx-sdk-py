@@ -18,15 +18,21 @@ from intx_sdk.services.portfolios import GetPositionForPortfolioInstrumentReques
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get position for portfolio instrument")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Get position for portfolio instrument",
+        epilog="""
+Examples:
+  # Get BTC-PERP position
+  python examples/portfolios/get_position_for_instrument.py --instrument BTC-PERP
+"""
+    )
     parser.add_argument("--instrument", required=True, help="Instrument symbol (e.g., BTC-PERP)")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = GetPositionForPortfolioInstrumentRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         instrument=args.instrument
     )
 

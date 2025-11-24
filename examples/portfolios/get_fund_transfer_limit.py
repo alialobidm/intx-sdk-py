@@ -18,15 +18,21 @@ from intx_sdk.services.portfolios import GetFundTransferLimitRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get fund transfer limit")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Get fund transfer limit",
+        epilog="""
+Examples:
+  # Get USDC transfer limit
+  python examples/portfolios/get_fund_transfer_limit.py --asset USDC
+"""
+    )
     parser.add_argument("--asset", required=True, help="Asset symbol")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = GetFundTransferLimitRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         asset=args.asset
     )
 

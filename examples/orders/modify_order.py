@@ -19,10 +19,16 @@ from intx_sdk.services.orders import ModifyOpenOrderRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Modify an open order")
+    parser = argparse.ArgumentParser(
+        description="Modify an open order",
+        epilog="""
+Examples:
+  # Modify order price
+  python examples/orders/modify_order.py --id 3jhx19me-1-0 --price 51000
+"""
+    )
     parser.add_argument("--id", required=True, help="Order ID")
     parser.add_argument("--client-order-id", help="Client order ID (auto-generated if not provided)")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
     parser.add_argument("--price", help="New price (optional)")
     parser.add_argument("--stop-price", help="New stop price (optional)")
     parser.add_argument("--size", help="New size (optional)")
@@ -36,7 +42,7 @@ def main():
     request = ModifyOpenOrderRequest(
         id=args.id,
         client_order_id=client_order_id,
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         price=args.price,
         stop_price=args.stop_price,
         size=args.size

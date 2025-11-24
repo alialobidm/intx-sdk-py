@@ -20,9 +20,15 @@ from intx_sdk.services.transfers import CreateCryptoAddressRequest
 def main():
     parser = argparse.ArgumentParser(
         description="Create crypto address",
-        epilog="Example: --network-arn-id 'networks/ethereum-mainnet/assets/313ef8a9-ae5a-5f2f-8a56-572c0e2a4d5a'"
+        epilog="""
+Examples:
+  # Create Ethereum address for USDC
+  python examples/transfers/create_crypto_address.py --asset USDC --network-arn-id networks/ethereum-mainnet/assets/313ef8a9-ae5a-5f2f-8a56-572c0e2a4d5a
+
+  # Create Bitcoin address
+  python examples/transfers/create_crypto_address.py --asset BTC --network-arn-id networks/bitcoin-mainnet/assets/f34c1c4a-7d9a-5b3e-9c2f-8e1d6b4a3f5c
+"""
     )
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
     parser.add_argument("--asset", required=True, help="Asset symbol (e.g., ETH, USDC)")
     parser.add_argument("--network-arn-id", required=True, help="Network ARN ID (format: networks/{network}/assets/{asset-id})")
     args = parser.parse_args()
@@ -30,7 +36,7 @@ def main():
     client = IntxServicesClient.from_env()
 
     request = CreateCryptoAddressRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         asset=args.asset,
         network_arn_id=args.network_arn_id
     )

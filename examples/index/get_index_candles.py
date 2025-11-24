@@ -18,7 +18,14 @@ from intx_sdk.enums import Granularity
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get index candles")
+    parser = argparse.ArgumentParser(
+        description="Get index candles",
+        epilog="""
+Examples:
+  # Get hourly candles for COIN50 index
+  python examples/index/get_index_candles.py --index COIN50 --granularity ONE_HOUR --start 2024-01-01T00:00:00Z
+"""
+    )
     parser.add_argument("--index", required=True, help="Index symbol")
     parser.add_argument("--granularity", required=True, help="Candle granularity: ONE_DAY or ONE_HOUR")
     parser.add_argument("--start", required=True, help="Start time")

@@ -18,15 +18,21 @@ from intx_sdk.services.portfolios import GetAssetLoanAvailabilityRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get asset loan availability")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Get asset loan availability",
+        epilog="""
+Examples:
+  # Get USDC loan availability
+  python examples/portfolios/get_asset_loan_availability.py --asset USDC
+"""
+    )
     parser.add_argument("--asset", required=True, help="Asset symbol")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = GetAssetLoanAvailabilityRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         asset=args.asset
     )
 

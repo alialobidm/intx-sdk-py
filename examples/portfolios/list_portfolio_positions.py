@@ -18,13 +18,19 @@ from intx_sdk.services.portfolios import ListPortfolioPositionsRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List portfolio positions")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(
+        description="List portfolio positions",
+        epilog="""
+Examples:
+  # List positions
+  python examples/portfolios/list_portfolio_positions.py
+"""
+    )
+    parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
-    request = ListPortfolioPositionsRequest(portfolio=args.portfolio)
+    request = ListPortfolioPositionsRequest(portfolio=os.getenv('INTX_PORTFOLIO_ID'))
 
     try:
         response = client.portfolios.list_portfolio_positions(request)

@@ -17,7 +17,14 @@ from intx_sdk.services.assets import GetAssetDetailsRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get asset details")
+    parser = argparse.ArgumentParser(
+        description="Get asset details",
+        epilog="""
+Examples:
+  # Get BTC details
+  python examples/assets/get_asset_details.py --asset BTC
+"""
+    )
     parser.add_argument("--asset", required=True, help="Asset symbol (e.g., BTC, USDC)")
     args = parser.parse_args()
 

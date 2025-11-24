@@ -18,15 +18,21 @@ from intx_sdk.services.portfolios import EnableDisableAutoMarginRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Enable or disable auto margin")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Enable or disable auto margin",
+        epilog="""
+Examples:
+  # Enable auto margin
+  python examples/portfolios/enable_disable_auto_margin.py --enabled true
+"""
+    )
     parser.add_argument("--enabled", required=True, help="Enable status: true or false")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = EnableDisableAutoMarginRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         enabled=args.enabled
     )
 

@@ -18,13 +18,19 @@ from intx_sdk.services.portfolios import GetPortfolioDetailsRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get portfolio details")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(
+        description="Get portfolio details",
+        epilog="""
+Examples:
+  # Get portfolio details
+  python examples/portfolios/get_portfolio_details.py
+"""
+    )
+    parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
-    request = GetPortfolioDetailsRequest(portfolio=args.portfolio)
+    request = GetPortfolioDetailsRequest(portfolio=os.getenv('INTX_PORTFOLIO_ID'))
 
     try:
         response = client.portfolios.get_portfolio_details(request)

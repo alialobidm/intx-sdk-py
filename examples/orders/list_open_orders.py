@@ -18,15 +18,21 @@ from intx_sdk.services.orders import ListOpenOrdersRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List open orders")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="List open orders",
+        epilog="""
+Examples:
+  # List all open orders
+  python examples/orders/list_open_orders.py
+"""
+    )
     parser.add_argument("--instrument", help="Instrument filter (optional)")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = ListOpenOrdersRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         instrument=args.instrument
     )
 

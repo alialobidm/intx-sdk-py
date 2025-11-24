@@ -17,7 +17,14 @@ from intx_sdk.services.transfers import ValidateCounterpartyIdRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Validate counterparty ID")
+    parser = argparse.ArgumentParser(
+        description="Validate counterparty ID",
+        epilog="""
+Examples:
+  # Validate a counterparty ID
+  python examples/transfers/validate_counterparty_id.py --counterparty-id cp_abc123def456
+"""
+    )
     parser.add_argument("--counterparty-id", required=True, help="Counterparty ID to validate")
     args = parser.parse_args()
 

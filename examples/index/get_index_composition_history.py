@@ -17,7 +17,14 @@ from intx_sdk.services.index import GetIndexCompositionHistoryRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get index composition history")
+    parser = argparse.ArgumentParser(
+        description="Get index composition history",
+        epilog="""
+Examples:
+  # Get COIN50 index composition history
+  python examples/index/get_index_composition_history.py --index COIN50
+"""
+    )
     parser.add_argument("--index", required=True, help="Index symbol")
     parser.add_argument("--time-from", help="Start time (optional)")
     args = parser.parse_args()

@@ -18,16 +18,22 @@ from intx_sdk.services.orders import CancelOrderRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Cancel an order")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
-    parser.add_argument("--order-id", required=True, help="Order ID to cancel")
+    parser = argparse.ArgumentParser(
+        description="Cancel an order",
+        epilog="""
+Examples:
+  # Cancel order
+  python examples/orders/cancel_order.py --id 3jhx19me-1-0
+"""
+    )
+    parser.add_argument("--id", required=True, help="Order ID to cancel")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = CancelOrderRequest(
-        portfolio=args.portfolio,
-        order_id=args.order_id
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
+        id=args.id
     )
 
     try:

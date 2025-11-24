@@ -17,7 +17,14 @@ from intx_sdk.services.index import GetIndexCompositionRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Get index composition")
+    parser = argparse.ArgumentParser(
+        description="Get index composition",
+        epilog="""
+Examples:
+  # Get COIN50 index composition
+  python examples/index/get_index_composition.py --index COIN50
+"""
+    )
     parser.add_argument("--index", required=True, help="Index symbol")
     args = parser.parse_args()
 

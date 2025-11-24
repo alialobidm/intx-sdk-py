@@ -12,14 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import argparse
+import os
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.orders import CancelOrdersRequest
 from intx_sdk.enums import OrderSide, InstrumentType
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Cancel multiple orders")
-    parser.add_argument("--portfolio", required=True, help="Portfolio ID")
+    parser = argparse.ArgumentParser(
+        description="Cancel multiple orders",
+        epilog="""
+Examples:
+  # Cancel all orders for a portfolio
+  python examples/orders/cancel_orders.py
+"""
+    )
     parser.add_argument("--instrument", help="Instrument filter (optional)")
     parser.add_argument("--side", help="Side filter: BUY or SELL (optional)")
     parser.add_argument("--instrument-type", help="Instrument type filter: SPOT or PERP (optional)")
@@ -28,7 +35,7 @@ def main():
     client = IntxServicesClient.from_env()
 
     request = CancelOrdersRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         instrument=args.instrument,
         side=OrderSide[args.side].value if args.side else None,
         instrument_type=InstrumentType[args.instrument_type].value if args.instrument_type else None

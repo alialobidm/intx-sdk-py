@@ -11,11 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.addressbook import GetAddressBookRequest
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Get address book",
+        epilog="""
+Examples:
+  # Get address book
+  python examples/addressbook/get_address_book.py
+"""
+    )
+    parser.parse_args()
+
     client = IntxServicesClient.from_env()
 
     request = GetAddressBookRequest()

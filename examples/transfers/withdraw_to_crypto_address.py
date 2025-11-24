@@ -18,8 +18,14 @@ from intx_sdk.services.transfers import WithdrawToCryptoAddressRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Withdraw to crypto address")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Withdraw to crypto address",
+        epilog="""
+Examples:
+  # Withdraw USDC to Ethereum address
+  python examples/transfers/withdraw_to_crypto_address.py --asset USDC --amount 1000 --address 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb --network-arn-id networks/ethereum-mainnet/assets/313ef8a9-ae5a-5f2f-8a56-572c0e2a4d5a --nonce 12345
+"""
+    )
     parser.add_argument("--asset", required=True, help="Asset symbol")
     parser.add_argument("--amount", required=True, help="Amount to withdraw")
     parser.add_argument("--address", required=True, help="Destination crypto address")
@@ -31,7 +37,7 @@ def main():
     client = IntxServicesClient.from_env()
 
     request = WithdrawToCryptoAddressRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         asset=args.asset,
         amount=args.amount,
         address=args.address,

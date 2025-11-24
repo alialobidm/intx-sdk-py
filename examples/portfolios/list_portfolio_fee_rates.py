@@ -11,11 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import argparse
 from intx_sdk import IntxServicesClient
 from intx_sdk.services.portfolios import ListPortfolioFeeRatesRequest
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="List portfolio fee rates",
+        epilog="""
+Examples:
+  # List all portfolio fee rates
+  python examples/portfolios/list_portfolio_fee_rates.py
+"""
+    )
+    parser.parse_args()
+
     client = IntxServicesClient.from_env()
 
     request = ListPortfolioFeeRatesRequest()

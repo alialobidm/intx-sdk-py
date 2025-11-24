@@ -19,8 +19,14 @@ from intx_sdk.enums import LoanAction
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Preview loan update")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Preview loan update",
+        epilog="""
+Examples:
+  # Preview acquiring USDC loan
+  python examples/portfolios/preview_loan_update.py --asset USDC --action ACQUIRE --amount 1000
+"""
+    )
     parser.add_argument("--asset", required=True, help="Asset symbol")
     parser.add_argument("--action", required=True, help="Action: ACQUIRE or REPAY")
     parser.add_argument("--amount", required=True, help="Loan amount")
@@ -29,7 +35,7 @@ def main():
     client = IntxServicesClient.from_env()
 
     request = PreviewLoanUpdateRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         asset=args.asset,
         action=LoanAction[args.action].value,
         amount=args.amount

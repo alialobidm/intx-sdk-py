@@ -18,15 +18,21 @@ from intx_sdk.services.portfolios import UpdatePortfolioRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Update portfolio")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Update portfolio",
+        epilog="""
+Examples:
+  # Update portfolio name
+  python examples/portfolios/update_portfolio.py --name "New Portfolio Name"
+"""
+    )
     parser.add_argument("--name", required=True, help="New portfolio name")
     args = parser.parse_args()
 
     client = IntxServicesClient.from_env()
 
     request = UpdatePortfolioRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         name=args.name
     )
 

@@ -18,8 +18,14 @@ from intx_sdk.services.transfers import WithdrawToCounterpartyIdRequest
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Withdraw to counterparty ID")
-    parser.add_argument("--portfolio", default=os.getenv('INTX_PORTFOLIO_ID'), help="Portfolio ID (defaults to INTX_PORTFOLIO_ID env var)")
+    parser = argparse.ArgumentParser(
+        description="Withdraw to counterparty ID",
+        epilog="""
+Examples:
+  # Withdraw USDC
+  python examples/transfers/withdraw_to_counterparty_id.py --counterparty-id cp_abc123def456 --asset USDC --amount 1000 --nonce 12345
+"""
+    )
     parser.add_argument("--counterparty-id", required=True, help="Counterparty ID")
     parser.add_argument("--asset", required=True, help="Asset symbol")
     parser.add_argument("--amount", required=True, help="Amount to withdraw")
@@ -29,7 +35,7 @@ def main():
     client = IntxServicesClient.from_env()
 
     request = WithdrawToCounterpartyIdRequest(
-        portfolio=args.portfolio,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
         counterparty_id=args.counterparty_id,
         asset=args.asset,
         amount=args.amount,
