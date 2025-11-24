@@ -63,10 +63,29 @@ client = IntxServicesClient(credentials)
 
 ## Environment Configuration
 
-By default, the SDK uses the production environment. To use the sandbox environment, set the `INTX_ENVIRONMENT` environment variable:
+By default, the SDK uses the production environment. To use a different environment, set the `INTX_BASE_URL` environment variable:
 
 ```bash
-export INTX_ENVIRONMENT=sandbox
+# Use sandbox environment
+export INTX_BASE_URL=https://api-n5e1.coinbase.com/api/v1
+
+# Or use production (default)
+export INTX_BASE_URL=https://api.international.coinbase.com/api/v1
+```
+
+Alternatively, you can use the exported constants:
+
+```python
+from intx_sdk import IntxServicesClient, SANDBOX_BASE_URL, PRODUCTION_BASE_URL
+
+# Use sandbox
+client = IntxServicesClient.from_env(base_url=SANDBOX_BASE_URL)
+
+# Use production (or omit base_url parameter for default)
+client = IntxServicesClient.from_env(base_url=PRODUCTION_BASE_URL)
+
+# Use custom URL
+client = IntxServicesClient.from_env(base_url="https://custom.api.com/v1")
 ```
 
 ## Usage

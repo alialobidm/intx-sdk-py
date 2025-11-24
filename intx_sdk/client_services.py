@@ -63,10 +63,12 @@ class IntxServicesClient:
                  base_url: Optional[str] = None) -> 'IntxServicesClient':
         credentials = Credentials.from_env(variable_name)
 
-        # If no base_url provided, check INTX_ENVIRONMENT variable
+        # Priority order for base_url:
+        # 1. Explicit base_url parameter
+        # 2. INTX_BASE_URL environment variable
+        # 3. Default to PRODUCTION_BASE_URL
         if base_url is None:
-            env = os.getenv('INTX_ENVIRONMENT', 'production').lower()
-            base_url = SANDBOX_BASE_URL if env == 'sandbox' else PRODUCTION_BASE_URL
+            base_url = os.getenv('INTX_BASE_URL', PRODUCTION_BASE_URL)
 
         return cls(credentials, base_url)
 
