@@ -410,8 +410,8 @@ class PortfolioPosition:
 
 @dataclass
 class TotalOpenPositionLimit:
-    total_open_position_notional_limit: str
     total_open_position_notional_limit_enforced: bool
+    total_open_position_notional_limit: Optional[str] = None
 
 
 @dataclass

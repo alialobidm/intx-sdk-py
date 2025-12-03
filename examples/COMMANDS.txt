@@ -28,7 +28,7 @@ python examples/orders/create_order.py --instrument BTC-PERP --side BUY --size 0
 python examples/orders/get_order_details.py --order-id 12345
 python examples/orders/list_open_orders.py
 python examples/orders/modify_order.py --id 12345 --price 51000
-python examples/orders/cancel_order.py --order-id 12345
+python examples/orders/cancel_order.py --id 12345
 python examples/orders/cancel_orders.py
 
 # Portfolios
