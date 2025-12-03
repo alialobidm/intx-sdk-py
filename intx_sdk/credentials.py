@@ -46,6 +46,10 @@ class Credentials:
                         key, value = line.split('=', 1)
                         key = key.strip()
                         value = value.strip()
+
+                        if value and len(value) >= 2:
+                            if (value[0] == '"' and value[-1] == '"') or (value[0] == "'" and value[-1] == "'"):
+                                value = value[1:-1]
                         if key and key not in os.environ:
                             os.environ[key] = value
             except Exception:
