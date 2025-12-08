@@ -1,0 +1,59 @@
+# Copyright 2025-present Coinbase Global, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+import argparse
+import os
+import uuid
+from intx_sdk import IntxServicesClient
+from intx_sdk.services.orders import ModifyOpenOrderRequest
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Modify an open order",
+        epilog="""
+Examples:
+  # Modify order price
+  python examples/orders/modify_order.py --id 3jhx19me-1-0 --price 51000
+"""
+    )
+    parser.add_argument("--id", required=True, help="Order ID")
+    parser.add_argument("--client-order-id", help="Client order ID (auto-generated if not provided)")
+    parser.add_argument("--price", help="New price (optional)")
+    parser.add_argument("--stop-price", help="New stop price (optional)")
+    parser.add_argument("--size", help="New size (optional)")
+    args = parser.parse_args()
+
+    client = IntxServicesClient.from_env()
+
+    # Generate client_order_id if not provided
+    client_order_id = args.client_order_id or str(uuid.uuid4())
+
+    request = ModifyOpenOrderRequest(
+        id=args.id,
+        client_order_id=client_order_id,
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
+        price=args.price,
+        stop_price=args.stop_price,
+        size=args.size
+    )
+
+    try:
+        response = client.orders.modify_open_order(request)
+        print(response)
+    except Exception as e:
+        print(f"failed to modify order: {e}")
+
+
+if __name__ == "__main__":
+    main()

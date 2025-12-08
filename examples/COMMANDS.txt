@@ -1,0 +1,77 @@
+# Address Book
+python examples/addressbook/get_address_book.py
+
+# Assets
+python examples/assets/list_assets.py
+python examples/assets/get_asset_details.py --asset BTC
+python examples/assets/get_supported_networks.py --asset BTC
+
+# Fee Rates
+python examples/feerates/list_fee_rate_tiers.py
+
+# Index
+python examples/index/get_index_candles.py --index COIN50 --granularity ONE_DAY --start "2024-01-01T00:00:00Z"
+python examples/index/get_index_composition.py --index COIN50
+python examples/index/get_index_composition_history.py --index COIN50
+python examples/index/get_index_price.py --index COIN50
+
+# Instruments
+python examples/instruments/list_instruments.py
+python examples/instruments/get_instrument_details.py --instrument BTC-PERP
+python examples/instruments/get_quote.py --instrument BTC-PERP
+python examples/instruments/get_aggregated_candles.py --instrument BTC-PERP --granularity ONE_HOUR --start "2024-01-01T00:00:00Z"
+python examples/instruments/get_historical_funding_rates.py --instrument BTC-PERP
+python examples/instruments/get_daily_trading_volumes.py --instruments "BTC-PERP,ETH-PERP"
+
+# Orders
+python examples/orders/create_order.py --instrument BTC-PERP --side BUY --size 0.01 --type LIMIT --price 50000 --tif GTC
+python examples/orders/get_order_details.py --order-id 12345
+python examples/orders/list_open_orders.py
+python examples/orders/modify_order.py --id 12345 --price 51000
+python examples/orders/cancel_order.py --id 12345
+python examples/orders/cancel_orders.py
+
+# Portfolios
+python examples/portfolios/list_portfolios.py
+python examples/portfolios/create_portfolio.py --name "My Portfolio"
+python examples/portfolios/get_portfolio.py
+python examples/portfolios/get_portfolio_details.py
+python examples/portfolios/get_portfolio_summary.py
+python examples/portfolios/update_portfolio.py --name "New Name"
+python examples/portfolios/patch_portfolio.py --portfolio-name "Updated Name"
+python examples/portfolios/list_portfolio_balances.py
+python examples/portfolios/get_balance_for_portfolio_asset.py --asset USDC
+python examples/portfolios/list_portfolio_positions.py
+python examples/portfolios/get_position_for_instrument.py --instrument BTC-PERP
+python examples/portfolios/list_portfolio_fills.py
+python examples/portfolios/list_fills_by_portfolios.py
+python examples/portfolios/list_portfolio_fee_rates.py
+python examples/portfolios/transfer_funds.py --from-portfolio abc123 --to-portfolio def456 --asset USDC --amount 100
+python examples/portfolios/transfer_position.py --from-portfolio abc123 --to-portfolio def456 --instrument BTC-PERP --quantity 0.1 --side BUY
+python examples/portfolios/set_margin_override.py --margin-override 10000
+python examples/portfolios/enable_disable_auto_margin.py --enabled true
+python examples/portfolios/enable_disable_cross_collateral.py --enabled true
+python examples/portfolios/get_fund_transfer_limit.py --asset USDC
+python examples/portfolios/acquire_or_repay_loan.py --asset USDC --action ACQUIRE --amount 1000
+python examples/portfolios/preview_loan_update.py --asset USDC --action ACQUIRE --amount 1000
+python examples/portfolios/list_active_loans.py
+python examples/portfolios/get_asset_loan_availability.py --asset USDC
+python examples/portfolios/get_loan_info_for_portfolio_asset.py --asset USDC
+python examples/portfolios/get_open_position_limits_for_portfolio_instrument.py --instrument BTC-PERP
+python examples/portfolios/list_open_position_limits_for_all_instruments.py
+python examples/portfolios/get_total_open_position_limit.py
+
+# Position Offsets
+python examples/positionoffsets/list_position_offsets.py
+
+# Rankings
+python examples/rankings/get_rankings.py --instrument-type SPOT
+
+# Transfers
+python examples/transfers/list_transfers.py
+python examples/transfers/get_transfer.py --transfer-uuid abc-123-def
+python examples/transfers/create_crypto_address.py --asset ETH --network-arn-id "networks/ethereum-mainnet/assets/313ef8a9-ae5a-5f2f-8a56-572c0e2a4d5a"
+python examples/transfers/create_counterparty_id.py
+python examples/transfers/validate_counterparty_id.py --counterparty-id abc123
+python examples/transfers/withdraw_to_counterparty_id.py --counterparty-id abc123 --asset USDC --amount 100 --nonce 12345
+python examples/transfers/withdraw_to_crypto_address.py --asset USDC --amount 100 --address 0x123... --network-arn-id "networks/ethereum-mainnet/assets/..." --nonce 12345

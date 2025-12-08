@@ -14,27 +14,28 @@
 
 import unittest
 from unittest.mock import patch, MagicMock
-from intx_sdk.transfer_funds import IntxClient, TransferFundsRequest, Credentials
-from test_constants import BASE_URL
+from intx_sdk import IntxServicesClient
+from intx_sdk.services.portfolios import TransferFundsRequest
+from intx_sdk.credentials import Credentials
+from tests.test_constants import BASE_URL
 
 
 class TestTransferFunds(unittest.TestCase):
 
-    @patch('transfer_funds.Client')
-    def test_transfer_funds_success(self, MockClient):
+    @patch('intx_sdk.client.Client.request')
+    def test_transfer_funds_success(self, mock_request):
         mock_response = MagicMock()
         mock_response.json.return_value = {
-            "transaction_id": "dummy_transaction_id",
-            "status": "COMPLETED",
-            "from": "portfolio_1",
-            "to": "portfolio_2",
-            "asset": "BTC",
-            "amount": "0.5"
+            "success": True
         }
-        MockClient.return_value.request.return_value = mock_response
+        mock_request.return_value = mock_response
 
-        credentials = Credentials.from_env("INTX_CREDENTIALS")
-        intx_client = IntxClient(credentials, base_url=BASE_URL)
+        credentials = Credentials(
+            access_key="test_key",
+            passphrase="test_passphrase",
+            signing_key="test_signing_key"
+        )
+        client = IntxServicesClient(credentials, base_url=BASE_URL)
 
         request = TransferFundsRequest(
             from_portfolio="portfolio_1",
@@ -42,24 +43,20 @@ class TestTransferFunds(unittest.TestCase):
             asset="BTC",
             amount="0.5"
         )
-        response = intx_client.transfer_funds(request)
+        response = client.portfolios.transfer_funds(request)
 
-        self.assertEqual(response.response['transaction_id'], "dummy_transaction_id")
-        self.assertEqual(response.response['status'], "COMPLETED")
-        self.assertEqual(response.response['from'], "portfolio_1")
-        self.assertEqual(response.response['to'], "portfolio_2")
-        self.assertEqual(response.response['asset'], "BTC")
-        self.assertEqual(response.response['amount'], "0.5")
+        self.assertTrue(response.transfer_result.success)
 
-    @patch('transfer_funds.Client')
-    def test_transfer_funds_failure(self, MockClient):
-        mock_response = MagicMock()
-        mock_response.json.side_effect = Exception("API error")
+    @patch('intx_sdk.client.Client.request')
+    def test_transfer_funds_failure(self, mock_request):
+        mock_request.side_effect = Exception("API error")
 
-        MockClient.return_value.request.side_effect = mock_response.json.side_effect
-
-        credentials = Credentials.from_env("INTX_CREDENTIALS")
-        intx_client = IntxClient(credentials, base_url="https://api-n5e1.coinbase.com/api/v1")
+        credentials = Credentials(
+            access_key="test_key",
+            passphrase="test_passphrase",
+            signing_key="test_signing_key"
+        )
+        client = IntxServicesClient(credentials, base_url="https://api-n5e1.coinbase.com/api/v1")
 
         request = TransferFundsRequest(
             from_portfolio="portfolio_1",
@@ -68,7 +65,7 @@ class TestTransferFunds(unittest.TestCase):
             amount="0.5"
         )
         with self.assertRaises(Exception) as context:
-            intx_client.transfer_funds(request)
+            client.portfolios.transfer_funds(request)
 
         self.assertTrue('API error' in str(context.exception))
 

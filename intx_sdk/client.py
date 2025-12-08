@@ -21,8 +21,7 @@ from typing import Optional, Dict, List
 import requests
 
 from intx_sdk.credentials import Credentials
-
-DEFAULT_V1_API_BASE_URL = "https://api.international.coinbase.com/api/v1"
+from intx_sdk.constants import PRODUCTION_BASE_URL, SANDBOX_BASE_URL, DEFAULT_V1_API_BASE_URL
 
 
 class Client:

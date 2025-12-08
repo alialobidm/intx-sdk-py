@@ -1,0 +1,55 @@
+# Copyright 2025-present Coinbase Global, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+import argparse
+import os
+from intx_sdk import IntxServicesClient
+from intx_sdk.services.portfolios import AcquireOrRepayLoanRequest
+from intx_sdk.enums import LoanAction
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Acquire or repay a loan",
+        epilog="""
+Examples:
+  # Acquire USDC loan
+  python examples/portfolios/acquire_or_repay_loan.py --asset USDC --action ACQUIRE --amount 1000
+
+  # Repay BTC loan
+  python examples/portfolios/acquire_or_repay_loan.py --asset BTC --action REPAY --amount 0.5
+"""
+    )
+    parser.add_argument("--asset", required=True, help="Asset symbol")
+    parser.add_argument("--action", required=True, help="Action: ACQUIRE or REPAY")
+    parser.add_argument("--amount", required=True, help="Loan amount")
+    args = parser.parse_args()
+
+    client = IntxServicesClient.from_env()
+
+    request = AcquireOrRepayLoanRequest(
+        portfolio=os.getenv('INTX_PORTFOLIO_ID'),
+        asset=args.asset,
+        action=LoanAction[args.action].value,
+        amount=args.amount
+    )
+
+    try:
+        response = client.portfolios.acquire_or_repay_loan(request)
+        print(response)
+    except Exception as e:
+        print(f"failed to acquire or repay loan: {e}")
+
+
+if __name__ == "__main__":
+    main()

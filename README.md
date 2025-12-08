@@ -1,79 +1,105 @@
-# International Exchange (INTX) Python SDK README
+# Coinbase International Exchange (INTX) Python SDK
 
 ## Overview
 
 The *INTX Python SDK* is a sample library that demonstrates the usage of the [Coinbase International Exchange (INTX)](https://international.coinbase.com/) API via its [REST APIs](https://docs.cdp.coinbase.com/intx/reference). This SDK provides a structured way to integrate Coinbase INTX functionalities into your Python applications.
-
 ## License
 
 The *INTX Python SDK* sample library is free and open source and released under the [Apache License, Version 2.0](LICENSE).
 
 The application and code are only available for demonstration purposes.
 
-## Usage
+## Installation
 
-### Setting Up Credentials
+```bash
+pip install intx-sdk-py
+```
 
-To use the *INTX Python SDK*, initialize the [Credentials](intx_sdk/credentials.py) class with your INTX API credentials. This class is designed to facilitate the secure handling of sensitive information required to authenticate API requests.
+Or install from source:
 
-Ensure that your API credentials are stored securely and are not hard-coded directly in your source code. The Credentials class supports creating credentials from a JSON string or directly from environment variables, providing flexibility and enhancing security.
+```bash
+git clone https://github.com/coinbase-samples/intx-sdk-py.git
+cd intx-sdk-py
+pip install -e .
+```
 
-#### Example Initialization:
+## Authentication
+
+To use the INTX Python SDK, you will need to create API credentials in the [INTX web console](https://international.coinbase.com/) under Settings -> API.
+
+Credentials can be stored as environment variables or passed directly. The SDK supports two initialization patterns:
+
+### Using .env.example (Recommended)
+
+Copy the example file to `.env` and then fill in your credentials:
+
+```bash
+cp .env.example .env
+# then edit .env and set your values
+```
+
+Initialize the client:
 
 ```python
+from intx_sdk import IntxServicesClient
+
+client = IntxServicesClient.from_env()
+```
+
+### Using Credentials Object
+
+```python
+from intx_sdk import IntxServicesClient
 from intx_sdk.credentials import Credentials
 
-credentials = Credentials.from_env("INTX_CREDENTIALS")
+credentials = Credentials(
+    access_key="your-access-key",
+    passphrase="your-passphrase",
+    signing_key="your-signing-key"
+)
+
+client = IntxServicesClient(credentials)
 ```
 
-#### Specifying the base url
-INTX supports both production and sandbox environments. You can specify the desired environment by setting the base URL when initializing the `IntxClient`:
-```python
-intx_client = IntxClient(credentials, base_url="https://api-n5e1.coinbase.com/api/v1")
-```
-If no `base_url` is provided, the default production URL will be used.
+## Environment Configuration
 
-#### Environment Variable Format: 
+By default, the SDK uses the production environment. To use a different environment, set the `INTX_BASE_URL` environment variable:
 
-The JSON format expected for `INTX_CREDENTIALS` is:
+```bash
+# Use sandbox environment
+export INTX_BASE_URL=https://api-n5e1.coinbase.com/api/v1
 
-```
-{
-  "accessKey": "",
-  "passphrase": "",
-  "signingKey": "",
-}
+# Or use production (default)
+export INTX_BASE_URL=https://api.international.coinbase.com/api/v1
 ```
 
-### Obtaining API Credentials 
-
-Coinbase INTX API credentials can be created in the INTX web console under Settings -> APIs. 
-
-### Making API Calls
-Once the client is initialized, make the desired call. For example, to [list portfolios](intx_sdk/list_portfolios.py),
-pass in the request object, check for an error, and if nil, process the response.
+Alternatively, you can use the exported constants:
 
 ```python
-from intx_sdk.list_portfolios import IntxClient, ListPortfoliosRequest
+from intx_sdk import IntxServicesClient, SANDBOX_BASE_URL, PRODUCTION_BASE_URL
 
-credentials = Credentials.from_env("INTX_CREDENTIALS")
-intx_client = IntxClient(credentials)
+# Use sandbox
+client = IntxServicesClient.from_env(base_url=SANDBOX_BASE_URL)
 
+# Use production (or omit base_url parameter for default)
+client = IntxServicesClient.from_env(base_url=PRODUCTION_BASE_URL)
+
+# Use custom URL
+client = IntxServicesClient.from_env(base_url="https://custom.api.com/v1")
+```
+
+## Usage
+
+```python
+from intx_sdk import IntxServicesClient
+from intx_sdk.services.portfolios import ListPortfoliosRequest
+
+client = IntxServicesClient.from_env()
+
+# List portfolios
 request = ListPortfoliosRequest()
-try:
-    response = intx_client.list_portfolios(request)
-    print(response)
-except Exception as e:
-    print(f"failed to list portfolios: {e}")
+response = client.portfolios.list_portfolios(request)
+print(response)
 ```
 
-### Supported Versions
-The SDK is tested and confirmed to work with Python version 3.8 and newer.
-
-### Specifying Binaries (Version 0.2.0)
-To use version 0.2.0 of the INTX Python SDK, you can install the specific binary using pip:
-```
-pip install intx-sdk-py==0.2.0
-```
-Ensure that you are using the correct version to match the SDK capabilities and features described in this document.
-
+For more examples, see the [examples](examples/) directory.
